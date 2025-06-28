@@ -7,7 +7,8 @@ const { request } = require('http');
 const app = express();
 const port = 3000;
 
-const route = require('./routes');
+const routeUser = require('./routes/user');
+const routeAdmin = require('./routes/admin');
 // const db = require('./config/db');
 
 // Kết nối cơ sở dữ liệu
@@ -18,7 +19,8 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 app.use(methodOverride('_method'));
 app.use(express.json());
-route(app);
+routeUser(app);
+routeAdmin(app);
 
 app.use(
     express.urlencoded({

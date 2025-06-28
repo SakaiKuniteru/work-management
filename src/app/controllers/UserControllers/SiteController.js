@@ -1,7 +1,7 @@
 // const Course = require('../models/Course');
 // const { muntipleMongooseToObject } = require('../../util/mongoose')
 
-class SiteController {
+class SiteUserController {
     // [GET] /
     // index(req, res, next) {
     //     Course.find({})
@@ -15,8 +15,11 @@ class SiteController {
 
     // [GET] /search
     home(req, res) {
-        res.render('home');
+        res.render('user/home', {
+            layout: 'user/index',
+            title: 'Trang chủ'
+        });
     }
 }
 
-module.exports = new SiteController();
+module.exports = new SiteUserController();
