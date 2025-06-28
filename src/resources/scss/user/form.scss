@@ -1,0 +1,30 @@
+body {
+    background: url('https://www.highgear.com/wp-content/uploads/2023/03/what-is-work-management-2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+}
+.auth-container {
+    position: relative;
+    z-index: 999;
+}
+.card-custom {
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    background: #ffffff;
+    padding: 30px;
+}
+.btn-social {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-social i {
+    margin-right: 8px;
+}
+
+.font-size-forgot {
+    font-size: 0.75rem;
+}

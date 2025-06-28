@@ -20,6 +20,24 @@ class SiteUserController {
             title: 'Trang chủ'
         });
     }
+
+    login(req, res) {
+        res.render('user/login', {
+            layout: false,
+        });
+    }
+
+    register(req, res) {
+        res.render('user/register', {
+            layout: false,
+        });
+    }
+
+    forgotPassword(req, res) {
+        res.render('user/forgotPasword', {
+            layout: false,
+        });
+    }
 }
 
 module.exports = new SiteUserController();

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+    <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/user/form.css">
+        <link rel="stylesheet" href="css/boostrap.css">
+        <title>Đăng Ký</title>
+    </head>
+
+    <body>
+        <div class="container d-flex justify-content-center align-items-center auth-container" style="min-height: 100vh;">
+            <div class="card card-custom" style="max-width: 500px; width: 100%;">
+            
+                <div class="text-center mb-4">
+                    <h3 class="mt-3">Tạo tài khoản của bạn</h3>
+                </div>
+
+                <!-- Register Form -->
+                <form id="registerForm" action="/register" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Họ và tên</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            <input type="text" class="form-control" placeholder="Nhập họ và tên" required name="name">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                        <input type="tel" class="form-control" placeholder="Nhập số điện thoại" required name="phone">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                            <input type="email" class="form-control" placeholder="Nhập email" required name="email">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" placeholder="Nhập mật khẩu" required name="password" id="password">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Xác nhận mật khẩu</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" placeholder="Nhập lại mật khẩu" required name="confirmPassword" id="confirmPassword">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 rounded-pill py-2">Đăng ký</button>
+                </form>
+
+                <!-- Form OTP - Ẩn mặc định -->
+                <div id="otpSection" style="display: none;">
+                    <hr class="my-4">
+
+                    <!-- Header có nút back -->
+                    <div class="d-flex align-items-center mb-3">
+                        <button type="button" id="backToRegister" class="btn btn-link p-0 me-2 text-decoration-none">
+                            <i class="fa fa-arrow-left fa-lg"></i>
+                        </button>
+                        <h3 class="m-0">Xác thực OTP</h3>
+                    </div>
+
+                    <p class="text-center mb-4">
+                        Chúng tôi đã gửi mã xác thực (OTP) đến email của bạn. Vui lòng nhập mã để hoàn tất đăng ký.
+                    </p>
+
+                    <form id="otpForm" action="/register/verify-otp" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Mã OTP</label>
+                            <input type="text" class="form-control" name="otp" placeholder="Nhập mã OTP" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2">
+                            Xác thực
+                        </button>
+                    </form>
+                </div>
+
+                <div class="text-center mt-3">
+                    <h6>
+                        Bạn đã có tài khoản? <a href="/login" class="text-decoration-none">Đăng Nhập</a>
+                    </h6>
+                </div>
+
+                <hr class="my-4">
+
+                <p class="text-center fw-bold mb-3">Hoặc Đăng Ký Bằng</p>
+
+                <!-- Social buttons -->
+                <a href="/auth/google" class="btn btn-outline-danger btn-social">
+                    <i class="fab fa-google"></i> Đăng nhập bằng Google
+                </a>
+
+                <a href="/auth/facebook" class="btn btn-outline-primary btn-social">
+                    <i class="fab fa-facebook"></i> Đăng nhập bằng Facebook
+                </a>
+
+                <a href="/auth/apple" class="btn btn-outline-dark btn-social">
+                    <i class="fab fa-apple"></i> Đăng nhập bằng Apple
+                </a>
+
+                <a href="/auth/twitter" class="btn btn-outline-info btn-social">
+                    <i class="fab fa-twitter"></i> Đăng nhập bằng Twitter
+                </a>
+                
+                <a href="/auth/email" class="btn btn-outline-secondary btn-social">
+                    <i class="fa fa-envelope"></i> Đăng nhập bằng email
+                </a>
+            </div>
+        </div>
+        
+        <script>
+            document.getElementById("registerForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                // Gửi dữ liệu đăng ký lên backend ở đây (AJAX)
+                console.log("Đang gửi đăng ký... sẽ gửi OTP");
+
+                // Ẩn form đăng ký
+                this.style.display = "none";
+
+                // Hiện form OTP
+                document.getElementById("otpSection").style.display = "block";
+            });
+
+            document.getElementById("otpForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                let otpValue = this.otp.value;
+                console.log("Mã OTP người dùng nhập:", otpValue);
+
+                // Gửi mã OTP lên backend để xác thực
+                alert("Xác thực thành công!");
+                // window.location.href = "/login";
+            });
+
+            document.getElementById("backToRegister").addEventListener("click", function() {
+                document.getElementById("otpSection").style.display = "none";
+                document.getElementById("registerForm").style.display = "block";
+            });
+
+            // Toggle mật khẩu chính
+            document.getElementById("togglePassword").addEventListener("click", function () {
+                const pw = document.getElementById("password");
+                const type = pw.type === "password" ? "text" : "password";
+                pw.type = type;
+                this.querySelector("i").classList.toggle("fa-eye");
+                this.querySelector("i").classList.toggle("fa-eye-slash");
+            });
+
+            // Toggle mật khẩu xác nhận
+            document.getElementById("toggleConfirmPassword").addEventListener("click", function () {
+                const pw = document.getElementById("confirmPassword");
+                const type = pw.type === "password" ? "text" : "password";
+                pw.type = type;
+                this.querySelector("i").classList.toggle("fa-eye");
+                this.querySelector("i").classList.toggle("fa-eye-slash");
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
