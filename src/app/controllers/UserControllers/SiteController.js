@@ -38,6 +38,41 @@ class SiteUserController {
             layout: false,
         });
     }
+
+    dashboard(req, res) {
+        res.render('user/dashboard', {
+            layout: 'user/index',
+            title: 'Bảng điều khiển'
+        });
+    }
+
+    projects(req, res) {
+        res.render('user/projects', {
+            layout: 'user/index',
+            title: 'Dự án của tôi'
+        });
+    }
+
+    tasks(req, res) {
+        res.render('user/tasks/index', {
+            layout: 'user/index',
+            title: 'Nhiệm vụ của tôi'
+        });
+    }
+
+    tasksList(req, res) {
+        res.render('user/tasks/list', {
+            layout: 'user/index',
+            title: 'Nhiệm vụ mới'
+        });
+    }
+
+    taskDetail(req, res) {
+        res.render('user/tasks/detail', {
+            layout: 'user/index',
+            title: 'Thông tin nhiệm vụ'
+        });
+    }
 }
 
 module.exports = new SiteUserController();

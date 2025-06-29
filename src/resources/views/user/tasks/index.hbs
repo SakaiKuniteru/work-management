@@ -1,0 +1,74 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Nhiệm vụ của tôi</h2>
+        <div>
+            <button class="btn btn-success me-2" onclick="window.location.href='/tasks-list'">
+                Nhận thêm nhiệm vụ
+            </button>
+            <input type="text" class="form-control d-inline-block" style="width: 250px;" placeholder="Tìm kiếm nhiệm vụ...">
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+        <tr>
+            <th>Tên nhiệm vụ</th>
+            <th>Dự án</th>
+            <th>Thời gian giao việc</th>
+            <th>Hạn hoàn thành</th>
+            <th>Trạng thái</th>
+            <th>Ưu tiên</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <a href="/tasks-detail" class="text-decoration-none">
+                    Hoàn thiện báo cáo
+                </a>
+            </td>
+            <td>Dự án A</td>
+            <td>15/06/2025</td>
+            <td>30/06/2025</td>
+            <td><span class="badge bg-warning text-dark">Đang làm</span></td>
+            <td><span class="badge bg-danger">Cao</span></td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/tasks-detail?id=4" class="text-decoration-none">
+                    Triển khai server
+                </a>
+            </td>
+            <td>Dự án B</td>
+            <td>01/06/2025</td>
+            <td>05/07/2025</td>
+            <td><span class="badge bg-success">Hoàn thành</span></td>
+            <td><span class="badge bg-success">Thấp</span></td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/tasks-detail?id=4" class="text-decoration-none">
+                    Soạn tài liệu hướng dẫn
+                </a>
+            </td>
+            <td>Dự án C</td>
+            <td>10/06/2025</td>
+            <td>20/07/2025</td>
+            <td><span class="badge bg-secondary">Chưa bắt đầu</span></td>
+            <td><span class="badge bg-warning text-dark">Trung bình</span></td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/tasks-detail?id=4" class="text-decoration-none">
+                    Kiểm tra chất lượng
+                </a>
+            </td>
+            <td>Dự án D</td>
+            <td>05/06/2025</td>
+            <td>25/06/2025</td>
+            <td><span class="badge bg-danger">Chậm tiến độ</span></td>
+            <td><span class="badge bg-danger">Cao</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

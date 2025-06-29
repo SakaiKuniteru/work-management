@@ -1,0 +1,110 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Danh sách nhiệm vụ</h2>
+
+  <!-- Bộ lọc -->
+  <div class="row mb-3 g-2">
+    <div class="col-md-3">
+      <select class="form-select" id="statusFilter">
+        <option selected disabled>Lọc theo trạng thái</option>
+        <option value="Đang làm">Đang làm</option>
+        <option value="Hoàn thành">Hoàn thành</option>
+        <option value="Chưa bắt đầu">Chưa bắt đầu</option>
+        <option value="Chậm tiến độ">Chậm tiến độ</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" id="priorityFilter">
+        <option selected disabled>Lọc theo ưu tiên</option>
+        <option value="Cao">Cao → Thấp</option>
+        <option value="Thấp">Thấp → Cao</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control" id="deadlineFilter" placeholder="Lọc theo hạn hoàn thành">
+    </div>
+    <div class="col-md-3 d-flex justify-content-end">
+      <input type="text" class="form-control me-2" placeholder="Tìm kiếm nhiệm vụ..." id="searchInput">
+      <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+
+  <!-- Bảng danh sách nhiệm vụ -->
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Tên nhiệm vụ</th>
+        <th>Dự án</th>
+        <th>Thời gian giao việc</th>
+        <th>Hạn hoàn thành</th>
+        <th>Trạng thái</th>
+        <th>Số lượng</th>
+        <th>Xem nhiệm vụ</th>
+        <th>Nhận nhiệm vụ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Nhiệm vụ còn nhận được -->
+      <tr>
+        <td>Hoàn thiện báo cáo</td>
+        <td>Dự án A</td>
+        <td>15/06/2025</td>
+        <td>30/06/2025</td>
+        <td><span class="badge bg-warning text-dark">Đang làm</span></td>
+        <td>0/1</td>
+        <td>
+          <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#taskDetailModal">
+            Xem
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-success btn-sm">Nhận</button>
+        </td>
+      </tr>
+
+      <!-- Nhiệm vụ đã đủ người -->
+      <tr>
+        <td>Triển khai server</td>
+        <td>Dự án B</td>
+        <td>01/06/2025</td>
+        <td>05/07/2025</td>
+        <td><span class="badge bg-success">Hoàn thành</span></td>
+        <td>1/1</td>
+        <td>
+          <button class="btn btn-info btn-sm" disabled>
+            Xem
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-secondary btn-sm" disabled>
+            Đã nhận
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Chi tiết nhiệm vụ -->
+<div class="modal fade" id="taskDetailModal" tabindex="-1" aria-labelledby="taskDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskDetailModalLabel">Thông tin nhiệm vụ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Tên nhiệm vụ:</strong> Hoàn thiện báo cáo</p>
+        <p><strong>Dự án:</strong> Dự án A</p>
+        <p><strong>Mô tả:</strong> Hoàn thiện các báo cáo cuối kỳ cho dự án.</p>
+        <p><strong>Thời gian giao việc:</strong> 15/06/2025</p>
+        <p><strong>Hạn hoàn thành:</strong> 30/06/2025</p>
+        <p><strong>Trạng thái:</strong> <span class="badge bg-warning text-dark">Đang làm</span></p>
+        <p><strong>Số lượng:</strong> 0/1</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success">Nhận nhiệm vụ</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
+      </div>
+    </div>
+  </div>
+</div>
