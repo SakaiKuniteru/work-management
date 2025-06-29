@@ -12,6 +12,7 @@
         <option value="Chậm tiến độ">Chậm tiến độ</option>
       </select>
     </div>
+
     <div class="col-md-3">
       <select class="form-select" id="priorityFilter">
         <option selected disabled>Lọc theo ưu tiên</option>
@@ -19,9 +20,11 @@
         <option value="Thấp">Thấp → Cao</option>
       </select>
     </div>
+
     <div class="col-md-3">
       <input type="date" class="form-control" id="deadlineFilter" placeholder="Lọc theo hạn hoàn thành">
     </div>
+
     <div class="col-md-3 d-flex justify-content-end">
       <input type="text" class="form-control me-2" placeholder="Tìm kiếm nhiệm vụ..." id="searchInput">
       <button class="btn btn-primary"><i class="fas fa-search"></i></button>
@@ -49,7 +52,9 @@
         <td>Dự án A</td>
         <td>15/06/2025</td>
         <td>30/06/2025</td>
-        <td><span class="badge bg-warning text-dark">Đang làm</span></td>
+        <td>
+          <span class="badge bg-warning text-dark">Đang làm</span>
+        </td>
         <td>0/1</td>
         <td>
           <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#taskDetailModal">
@@ -67,7 +72,9 @@
         <td>Dự án B</td>
         <td>01/06/2025</td>
         <td>05/07/2025</td>
-        <td><span class="badge bg-success">Hoàn thành</span></td>
+        <td>
+          <span class="badge bg-success">Hoàn thành</span>
+        </td>
         <td>1/1</td>
         <td>
           <button class="btn btn-info btn-sm" disabled>
@@ -92,6 +99,7 @@
         <h5 class="modal-title" id="taskDetailModalLabel">Thông tin nhiệm vụ</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
         <p><strong>Tên nhiệm vụ:</strong> Hoàn thiện báo cáo</p>
         <p><strong>Dự án:</strong> Dự án A</p>
@@ -101,6 +109,7 @@
         <p><strong>Trạng thái:</strong> <span class="badge bg-warning text-dark">Đang làm</span></p>
         <p><strong>Số lượng:</strong> 0/1</p>
       </div>
+      
       <div class="modal-footer">
         <button class="btn btn-success">Nhận nhiệm vụ</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
