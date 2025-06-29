@@ -10,6 +10,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" >
         <link href="/css/user/app.css" rel="stylesheet" >
         <link href="/css/bootstrap.css" rel="stylesheet" >
+        <link rel="icon" href="/img/logo.png" type="image/jpeg">
         <title>{{title}}</title>
     </head>
 
@@ -17,7 +18,7 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
-                    <img src="/img/logo.jpg" alt="WM PQH Logo" class="user-avatar">
+                    <img src="/img/logo.png" alt="PQH Logo" class="user-avatar">
                 </a>
 
                 <form class="d-flex align-items-center me-3 search-box" role="search">
@@ -51,6 +52,7 @@
                     </ul>
                     
                     <ul class="navbar-nav d-flex align-items-center">
+                        <!-- Tin nhắn dropdown -->
                         <li class="nav-item dropdown me-3">
                             <button class="btn btn-link nav-link position-relative p-0 text-dark border-0" type="button" id="messageBtn" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-comment-dots fa-lg" id="messageIcon"></i>
@@ -60,69 +62,97 @@
                                 </span>
                             </button>
 
-                            <ul class="dropdown-menu dropdown-menu-end mt-2">
+                            <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="messageBtn" style="width: 500px; max-height: 80vh; overflow-y: auto;">
+                                <li class="border-bottom p-3">
+                                    <strong>Đoạn chat</strong>
+                                </li>
+
                                 <li>
-                                    <a class="dropdown-item" href="#">
-                                        Tin nhắn 1
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
+                                        <div class="flex-grow-1">
+                                        <div class="fw-bold">Đức Cường</div>
+                                            <small class="text-muted">Bạn: Để e hỏi thử mấy ô kia ...</small>
+                                        </div>
+                                        <span class="text-muted small ms-2">47 phút</span>
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item" href="#">
-                                        Tin nhắn 2
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
+                                        <div class="flex-grow-1">
+                                        <div class="fw-bold">Phạm Vũ Đăng</div>
+                                            <small class="text-muted">Đã bày tỏ cảm xúc 😢 về ti...</small>
+                                        </div>
+                                        <span class="text-muted small ms-2">1 giờ</span>
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item" href="#">
-                                        Tin nhắn 3
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
+                                        <div class="flex-grow-1">
+                                        <div class="fw-bold">Người lạ</div>
+                                            <small class="text-muted">Em gà mà đâu được ...</small>
+                                        </div>
+                                        <span class="text-muted small ms-2">2 giờ</span>
                                     </a>
                                 </li>
 
-                                <li><hr class="dropdown-divider"></li>
-
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Xem tất cả tin nhắn
-                                    </a>
+                                <li class="text-center p-2 border-top">
+                                    <a href="#" class="btn btn-primary btn-sm w-100">Mở tin nhắn trên trang</a>
                                 </li>
                             </ul>
                         </li>
 
+                        <!-- Thông báo dropdown -->
                         <li class="nav-item dropdown me-3">
                             <button class="btn btn-link nav-link position-relative p-0 text-dark border-0" type="button" id="notificationBtn" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-bell fa-lg" id="bellIcon"></i>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     3
-                                    <span class="visually-hidden">unread messages</span>
+                                    <span class="visually-hidden">unread notifications</span>
                                 </span>
                             </button>
 
-                            <ul class="dropdown-menu dropdown-menu-end mt-2">
+                            <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="notificationBtn" style="width: 500px; max-height: 80vh; overflow-y: auto;">
+                                <li class="border-bottom p-3">
+                                    <strong>Thông báo mới</strong>
+                                </li>
+
                                 <li>
-                                    <a class="dropdown-item" href="#">
-                                        Thông báo 1
+                                    <a class="dropdown-item d-flex align-items-start" href="#">
+                                        <i class="fa fa-info-circle me-2 text-primary"></i>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold">Thông báo 1</div>
+                                            <small class="text-muted">Đây là nội dung thông báo 1</small>
+                                        </div>
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item" href="#">
-                                        Thông báo 2
+                                    <a class="dropdown-item d-flex align-items-start" href="#">
+                                        <i class="fa fa-info-circle me-2 text-primary"></i>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold">Thông báo 2</div>
+                                            <small class="text-muted">Đây là nội dung thông báo 2</small>
+                                        </div>
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item" href="#">
-                                        Thông báo 3
+                                    <a class="dropdown-item d-flex align-items-start" href="#">
+                                        <i class="fa fa-info-circle me-2 text-primary"></i>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold">Thông báo 3</div>
+                                            <small class="text-muted">Đây là nội dung thông báo 3</small>
+                                        </div>
                                     </a>
                                 </li>
 
-                                <li><hr class="dropdown-divider"></li>
-
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Xem tất cả
-                                    </a>
+                                <li class="border-top p-2 text-start">
+                                    <a href="#" class="text-primary text-decoration-none fw-bold">Xem tất cả</a>
                                 </li>
                             </ul>
                         </li>
@@ -169,7 +199,7 @@
                 {{{body}}}
         </div>
 
-        <footer class="bg-info text-white pt-4">
+        <footer class="bg-info text-white pt-4 mt-5">
             <div class="container">
                 <div class="row">
                 <!-- Cột 1 -->

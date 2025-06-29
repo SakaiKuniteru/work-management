@@ -3,6 +3,8 @@ const routerUser = express.Router();
 const siteUserController = require('../../app/controllers/UserControllers/SiteController');
 
 routerUser.get('/dashboard', siteUserController.dashboard);
+routerUser.get('/project-detail', siteUserController.projectDetail);
+routerUser.get('/projects-list', siteUserController.projectsList);
 routerUser.get('/projects', siteUserController.projects);
 routerUser.get('/tasks-detail', siteUserController.taskDetail);
 routerUser.get('/tasks-list', siteUserController.tasksList);

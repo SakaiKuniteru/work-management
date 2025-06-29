@@ -46,13 +46,6 @@ class SiteUserController {
         });
     }
 
-    projects(req, res) {
-        res.render('user/projects', {
-            layout: 'user/index',
-            title: 'Dự án của tôi'
-        });
-    }
-
     tasks(req, res) {
         res.render('user/tasks/index', {
             layout: 'user/index',
@@ -71,6 +64,30 @@ class SiteUserController {
         res.render('user/tasks/detail', {
             layout: 'user/index',
             title: 'Thông tin nhiệm vụ'
+        });
+    }
+
+
+    projects(req, res) {
+        res.render('user/projects/index', {
+            layout: 'user/index',
+            title: 'Dự án của tôi'
+        });
+    }
+
+
+    projectsList(req, res) {
+        res.render('user/projects/list', {
+            layout: 'user/index',
+            title: 'Dự án mới'
+        });
+    }
+
+
+    projectDetail(req, res) {
+        res.render('user/projects/detail', {
+            layout: 'user/index',
+            title: 'Thông tin dự án'
         });
     }
 }
