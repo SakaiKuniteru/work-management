@@ -90,6 +90,13 @@ class SiteUserController {
             title: 'Thông tin dự án'
         });
     }
+
+    profile(req, res) {
+        res.render('user/profile', {
+            layout: 'user/index',
+            title: 'Trang cá nhân'
+        });
+    }
 }
 
 module.exports = new SiteUserController();

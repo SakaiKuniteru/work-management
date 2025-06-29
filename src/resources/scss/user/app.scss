@@ -60,3 +60,82 @@
     color: #999;
     font-weight: 400;
 }
+
+.cover-photo {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+// .avatar-container {
+//     position: absolute;
+//     bottom: -60px;
+//     left: 30px;
+//     border: 4px solid #fff;
+//     border-radius: 50%;
+//     overflow: hidden;
+//     width: 120px;
+//     height: 120px;
+// }
+
+// .avatar-container img {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+// }
+
+.profile-name {
+    margin-top: 70px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link {
+    color: #000;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd;
+    border-color: #0d6efd #0d6efd #fff;
+}
+
+.mb-n5 {
+    margin-bottom: -3rem !important;
+}
+
+.cover-wrapper {
+  position: relative;
+  margin-bottom: 70px;
+}
+
+.avatar-container {
+  position: absolute;
+  left: 10%;
+  bottom: -70px;
+  transform: translateX(-50%);
+}
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid white;
+  object-fit: cover;
+  display: block;
+}
+
+.change-avatar-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+  border-radius: 50%;
+  padding: 4px 6px;
+}
