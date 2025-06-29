@@ -39,13 +39,6 @@ class SiteUserController {
         });
     }
 
-    dashboard(req, res) {
-        res.render('user/dashboard', {
-            layout: 'user/index',
-            title: 'Bảng điều khiển'
-        });
-    }
-
     tasks(req, res) {
         res.render('user/tasks/index', {
             layout: 'user/index',

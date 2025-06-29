@@ -3,7 +3,6 @@ const routerUser = express.Router();
 const siteUserController = require('../../app/controllers/UserControllers/SiteController');
 
 routerUser.get('/profile', siteUserController.profile);
-routerUser.get('/dashboard', siteUserController.dashboard);
 routerUser.get('/project-detail', siteUserController.projectDetail);
 routerUser.get('/projects-list', siteUserController.projectsList);
 routerUser.get('/projects', siteUserController.projects);

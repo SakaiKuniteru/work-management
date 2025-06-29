@@ -17,180 +17,184 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <img src="/img/logo.png" alt="PQH Logo" class="user-avatar">
-                </a>
+                <div class="row w-100 align-items-center">
+                    <div class="col-12 col-lg-3 d-flex align-items-center mb-2 mb-lg-0">
+                        <a class="navbar-brand" href="/">
+                            <img src="/img/logo.png" alt="PQH Logo" class="user-avatar">
+                        </a>
 
-                <form class="d-flex align-items-center me-3 search-box" role="search">
-                    <div class="position-relative w-100">
-                        <i class="fa fa-search search-icon"></i>
-                        <input type="search" class="form-control search-input" placeholder="Tìm kiếm" aria-label="Search">
+                        <form class="d-flex align-items-center me-3 search-box" role="search">
+                            <div class="position-relative w-100">
+                                <i class="fa fa-search search-icon"></i>
+                                <input type="search" class="form-control search-input" placeholder="Tìm kiếm" aria-label="Search">
+                            </div>
+                        </form>
                     </div>
-                </form>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Trang chủ</a>
-                        </li>
+                    <div class="col-12 col-lg-6 d-flex justify-content-center mb-2 mb-lg-0">
+                        <ul class="navbar-nav flex-row gap-3 mb-2 mb-lg-0">
+                            <li class="nav-item me-5">
+                                <a class="nav-link" href="/" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Trang chủ">
+                                    <i class="fa fa-home my-icon"></i>
+                                </a>
+                            </li>
+                            
+                            <li class="nav-item me-5 ms-5">
+                                <a class="nav-link" href="/tasks" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nhiệm vụ của tôi">
+                                    <i class="fa fa-list-check my-icon"></i>
+                                </a>
+                            </li>
+                            
+                            <li class="nav-item ms-5">
+                                <a class="nav-link" href="/projects" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Dự án của tôi">
+                                    <i class="fa fa-briefcase my-icon"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/dashboard">Bảng điều khiển</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="tasks">Nhiệm vụ của tôi</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="projects">Dự án của tôi</a>
-                        </li>
-                    </ul>
-                    
-                    <ul class="navbar-nav d-flex align-items-center">
-                        <!-- Tin nhắn dropdown -->
-                        <li class="nav-item dropdown me-3">
-                            <button class="btn btn-link nav-link position-relative p-0 text-dark border-0" type="button" id="messageBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-comment-dots fa-lg" id="messageIcon"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    5
-                                    <span class="visually-hidden">unread messages</span>
-                                </span>
-                            </button>
+                    <div class="col-12 col-lg-3 d-flex justify-content-lg-end justify-content-start align-items-center gap-3">
+                        <ul class="navbar-nav flex-row align-items-center">
+                            <!-- Tin nhắn dropdown -->
+                            <li class="nav-item dropdown me-3">
+                                <button class="btn btn-link nav-link position-relative p-0 text-dark border-0" type="button" id="messageBtn" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tin nhắn">
+                                    <i class="fa fa-comment-dots my-icon" id="messageIcon"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        5
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
+                                </button>
 
-                            <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="messageBtn" style="width: 400px; max-height: 80vh; overflow-y: auto;">
-                                <li class="border-bottom p-3">
-                                    <strong>Đoạn chat</strong>
-                                </li>
+                                <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="messageBtn" style="width: 400px; max-height: 80vh; overflow-y: auto;">
+                                    <li class="border-bottom p-3">
+                                        <strong>Đoạn chat</strong>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
-                                        <div class="flex-grow-1">
-                                        <div class="fw-bold">Đức Cường</div>
-                                            <small class="text-muted">Bạn: Để e hỏi thử mấy ô kia ...</small>
-                                        </div>
-                                        <span class="text-muted small ms-2">47 phút</span>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
+                                            <div class="flex-grow-1">
+                                            <div class="fw-bold">Đức Cường</div>
+                                                <small class="text-muted">Bạn: Để e hỏi thử mấy ô kia ...</small>
+                                            </div>
+                                            <span class="text-muted small ms-2">47 phút</span>
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
-                                        <div class="flex-grow-1">
-                                        <div class="fw-bold">Phạm Vũ Đăng</div>
-                                            <small class="text-muted">Đã bày tỏ cảm xúc 😢 về ti...</small>
-                                        </div>
-                                        <span class="text-muted small ms-2">1 giờ</span>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
+                                            <div class="flex-grow-1">
+                                            <div class="fw-bold">Phạm Vũ Đăng</div>
+                                                <small class="text-muted">Đã bày tỏ cảm xúc 😢 về ti...</small>
+                                            </div>
+                                            <span class="text-muted small ms-2">1 giờ</span>
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
-                                        <div class="flex-grow-1">
-                                        <div class="fw-bold">Người lạ</div>
-                                            <small class="text-muted">Em gà mà đâu được ...</small>
-                                        </div>
-                                        <span class="text-muted small ms-2">2 giờ</span>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/484895554_685047493862507_8119295966222777149_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHVz6OOdojcR5eMlLsI44HLtZT5pIfuw4u1lPmkh-7Di38f6dfoMci9ehxHhSTgYDvyvxeRnGvCo0fdfXbdmhn3&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=ZkTXFN1FZ-Gj5Jv4UUwtSg&oh=00_AfPjVQGgfgl5qde6TDBH3R4eEpoEE2lBWjkEzVaWGbwb_A&oe=68673751" class="rounded-circle me-2 user-avatar" alt="Avatar">
+                                            <div class="flex-grow-1">
+                                            <div class="fw-bold">Người lạ</div>
+                                                <small class="text-muted">Em gà mà đâu được ...</small>
+                                            </div>
+                                            <span class="text-muted small ms-2">2 giờ</span>
+                                        </a>
+                                    </li>
 
-                                <li class="text-center p-2 border-top">
-                                    <a href="#" class="btn btn-primary btn-sm w-100">Mở tin nhắn trên trang</a>
-                                </li>
-                            </ul>
-                        </li>
+                                    <li class="text-center p-2 border-top">
+                                        <a href="#" class="btn btn-primary btn-sm w-100">Mở tin nhắn trên trang</a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <!-- Thông báo dropdown -->
-                        <li class="nav-item dropdown me-3">
-                            <button class="btn btn-link nav-link position-relative p-0 text-dark border-0" type="button" id="notificationBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-bell fa-lg" id="bellIcon"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    3
-                                    <span class="visually-hidden">unread notifications</span>
-                                </span>
-                            </button>
+                            <!-- Thông báo dropdown -->
+                            <li class="nav-item dropdown me-3">
+                                <button class="btn btn-link nav-link position-relative p-0 text-dark border-0" type="button" id="notificationBtn" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Thông báo">
+                                    <i class="fa fa-bell my-icon" id="bellIcon"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        3
+                                        <span class="visually-hidden">unread notifications</span>
+                                    </span>
+                                </button>
 
-                            <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="notificationBtn" style="width: 400px; max-height: 80vh; overflow-y: auto;">
-                                <li class="border-bottom p-3">
-                                    <strong>Thông báo mới</strong>
-                                </li>
+                                <ul class="dropdown-menu dropdown-menu-end mt-2 p-0" aria-labelledby="notificationBtn" style="width: 400px; max-height: 80vh; overflow-y: auto;">
+                                    <li class="border-bottom p-3">
+                                        <strong>Thông báo mới</strong>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-start" href="#">
-                                        <i class="fa fa-info-circle me-2 text-primary"></i>
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">Thông báo 1</div>
-                                            <small class="text-muted">Đây là nội dung thông báo 1</small>
-                                        </div>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-start" href="#">
+                                            <i class="fa fa-info-circle me-2 text-primary"></i>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold">Thông báo 1</div>
+                                                <small class="text-muted">Đây là nội dung thông báo 1</small>
+                                            </div>
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-start" href="#">
-                                        <i class="fa fa-info-circle me-2 text-primary"></i>
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">Thông báo 2</div>
-                                            <small class="text-muted">Đây là nội dung thông báo 2</small>
-                                        </div>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-start" href="#">
+                                            <i class="fa fa-info-circle me-2 text-primary"></i>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold">Thông báo 2</div>
+                                                <small class="text-muted">Đây là nội dung thông báo 2</small>
+                                            </div>
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-start" href="#">
-                                        <i class="fa fa-info-circle me-2 text-primary"></i>
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">Thông báo 3</div>
-                                            <small class="text-muted">Đây là nội dung thông báo 3</small>
-                                        </div>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-start" href="#">
+                                            <i class="fa fa-info-circle me-2 text-primary"></i>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold">Thông báo 3</div>
+                                                <small class="text-muted">Đây là nội dung thông báo 3</small>
+                                            </div>
+                                        </a>
+                                    </li>
 
-                                <li class="border-top p-2 text-start">
-                                    <a href="#" class="text-primary text-decoration-none fw-bold">Xem tất cả</a>
-                                </li>
-                            </ul>
-                        </li>
+                                    <li class="border-top p-2 text-start">
+                                        <a href="#" class="text-primary text-decoration-none fw-bold">Xem tất cả</a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link p-0 d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                <div class="position-relative d-inline-block">
-                                    <img class="user-avatar" src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7" alt="">
-                                    <i class="fa fa-chevron-down dropdown-caret-icon position-absolute"></i>
-                                </div>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="/profile">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link p-0 d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                    <div class="position-relative d-inline-block">
                                         <img class="user-avatar" src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7" alt="">
-                                        Phạm Quốc Huy
-                                    </a>
-                                </li>
+                                        <i class="fa fa-chevron-down dropdown-caret-icon position-absolute"></i>
+                                    </div>
+                                </a>
 
-                                <li><hr class="dropdown-divider"></li>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="/profile">
+                                            <img class="user-avatar" src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7" alt="">
+                                            Phạm Quốc Huy
+                                        </a>
+                                    </li>
 
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class='bx bxs-cog' ></i>
-                                        Cài đặt
-                                    </a>
-                                </li>
+                                    <li><hr class="dropdown-divider"></li>
 
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class='bx bx-log-out'></i>
-                                        Đăng xuất
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class='bx bxs-cog' ></i>
+                                            Cài đặt
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class='bx bx-log-out'></i>
+                                            Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -377,6 +381,14 @@
                 messageIcon.classList.remove('text-primary');
                 messageIcon.classList.add('text-dark');
             });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (window.location.pathname === new URL(link.href).pathname) {
+                    link.classList.add('active', 'text-primary');
+                }
+            });
+
+
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
