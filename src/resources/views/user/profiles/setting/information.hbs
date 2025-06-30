@@ -1,0 +1,74 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-4 col-lg-3 sidebar">
+            <div class="d-flex align-items-center mb-4">
+                <img src="/img/logo.png" alt="Logo" style="height: 32px; margin-right: 10px;">
+                <h5 class="mb-0 fw-bold">Trung tâm tài khoản</h5>
+            </div>
+
+            <a href="/setting" class="nav-link mb-2" data-page="personal" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <i class="fa fa-user"></i> Trang cá nhân
+            </a>
+
+            <p class="small text-muted mb-4">
+                Quản lý phần cài đặt tài khoản và trải nghiệm kết nối trên các công nghệ của bạn.
+            </p>
+
+            <nav class="nav flex-column">
+                <a href="/password-security" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <i class="fa fa-shield-alt"></i> 
+                    Mật khẩu và bảo mật
+                </a>
+
+                <a href="/information" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <i class="fa fa-id-card"></i> 
+                    Thông tin cá nhân
+                </a>
+
+                <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <i class="fa fa-sign-out-alt"></i> 
+                    Đăng xuất
+                </a>
+            </nav>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-8 col-lg-9 p-4">
+            <h4 class="fw-bold mb-3">Trang cá nhân</h4>
+            <p class="text-muted">
+                Quản lý thông tin trên trang cá nhân và dùng chung trên các dịch vụ của bạn.
+            </p>
+
+            <div class="card mt-3">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7"
+                        class="rounded-circle me-3" 
+                        style="width: 50px; height: 50px;" 
+                        alt="Avatar" 
+                        />
+
+                        <div>
+                            <div class="fw-bold">Phạm Quốc Huy</div>
+                        </div>
+                    </div>
+                    <i class="fa fa-chevron-right text-muted"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href !== '#') {
+            const linkPath = new URL(href, window.location.origin).pathname;
+            if (window.location.pathname === linkPath) {
+                link.classList.add('active', 'text-primary');
+            }
+        }
+    });
+
+</script>

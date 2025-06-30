@@ -85,7 +85,28 @@ class SiteUserController {
     }
 
     profile(req, res) {
-        res.render('user/profile', {
+        res.render('user/profiles/profile', {
+            layout: 'user/index',
+            title: 'Trang cá nhân'
+        });
+    }
+
+    setting(req, res) {
+        res.render('user/profiles/setting/setting', {
+            layout: 'user/index',
+            title: 'Trang cá nhân'
+        });
+    }
+
+    information(req, res) {
+        res.render('user/profiles/setting/information', {
+            layout: 'user/index',
+            title: 'Trang cá nhân'
+        });
+    }
+
+    password_security(req, res) {
+        res.render('user/profiles/setting/password_security', {
             layout: 'user/index',
             title: 'Trang cá nhân'
         });

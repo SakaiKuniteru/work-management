@@ -122,4 +122,46 @@
   font-size: 1.5em;
 }
 
+.sidebar {
+  min-height: 100vh;
+  border-right: 1px solid #dee2e6;
+  padding: 2rem 1rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #212529;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.sidebar a.active, .sidebar a:hover {
+  background-color: #e7f1ff;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.sidebar i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
+}
+
+.edit-avatar-btn {
+  background: none;
+  border: none;
+  color: #1877f2;
+  padding: 0;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.edit-avatar-btn:hover {
+  text-decoration: underline;
+}
+
 /*# sourceMappingURL=app.css.map */

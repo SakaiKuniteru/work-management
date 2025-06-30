@@ -2,6 +2,10 @@ const express = require('express');
 const routerUser = express.Router();
 const siteUserController = require('../../app/controllers/UserControllers/SiteController');
 
+
+routerUser.get('/information', siteUserController.information);
+routerUser.get('/password-security', siteUserController.password_security);
+routerUser.get('/setting/', siteUserController.setting);
 routerUser.get('/profile', siteUserController.profile);
 routerUser.get('/project-detail', siteUserController.projectDetail);
 routerUser.get('/projects-list', siteUserController.projectsList);
