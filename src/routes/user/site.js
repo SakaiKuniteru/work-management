@@ -15,6 +15,9 @@ routerUser.get('/tasks-list', siteUserController.tasksList);
 routerUser.get('/tasks', siteUserController.tasks);
 routerUser.get('/forgot-password', siteUserController.forgotPassword);
 routerUser.get('/login', siteUserController.login);
+routerUser.post('/register/resend-otp', siteUserController.resendOTP);
+routerUser.post('/register', siteUserController.handleRegister);
+routerUser.post('/register/verify-otp', siteUserController.verifyOTP);
 routerUser.get('/register', siteUserController.register);
 routerUser.get('/', siteUserController.home);
 

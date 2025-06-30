@@ -9,10 +9,10 @@ const port = 3000;
 
 const routeUser = require('./routes/user');
 const routeAdmin = require('./routes/admin');
-// const db = require('./config/db');
+const db = require('./config/db');
 
 // Kết nối cơ sở dữ liệu
-// db.connect();
+db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'hbs');

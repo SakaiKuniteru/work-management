@@ -176,3 +176,11 @@
 .edit-avatar-btn:hover {
     text-decoration: underline;
 }
+
+.card-link {
+    cursor: pointer;
+}
+
+.modal-backdrop.show {
+    opacity: 0.5;
+}

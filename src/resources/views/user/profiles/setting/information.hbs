@@ -7,7 +7,7 @@
                 <h5 class="mb-0 fw-bold">Trung tâm tài khoản</h5>
             </div>
 
-            <a href="/setting" class="nav-link mb-2" data-page="personal" data-bs-toggle="tooltip" data-bs-placement="bottom">
+            <a href="/setting" class="nav-link mb-2" data-page="personal">
                 <i class="fa fa-user"></i> Trang cá nhân
             </a>
 
@@ -16,107 +16,75 @@
             </p>
 
             <nav class="nav flex-column">
-                <a href="/password-security" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <a href="/password-security" class="nav-link">
                     <i class="fa fa-shield-alt"></i> 
                     Mật khẩu và bảo mật
                 </a>
 
-                <a href="/information" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <a href="/information" class="nav-link">
                     <i class="fa fa-id-card"></i> 
                     Thông tin cá nhân
                 </a>
 
-                <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <a href="#" class="nav-link">
                     <i class="fa fa-sign-out-alt"></i> 
                     Đăng xuất
                 </a>
             </nav>
         </div>
 
-        <!-- Content -->
-        <div class="col-md-8 col-lg-9 p-4">
-            <h4 class="fw-bold mb-3">Trang cá nhân</h4>
+        <!-- Main content -->
+        <div class="col-md-8 col-lg-9 p-5">
+            <h4 class="fw-bold mb-3">Thông tin cá nhân</h4>
             <p class="text-muted">
-                Quản lý thông tin trên trang cá nhân và dùng chung trên các dịch vụ của bạn.
+                PQH sử dụng thông tin này để xác minh danh tính của bạn và bảo vệ cộng đồng của chúng tôi.
+                Bạn là người quyết định những thông tin cá nhân nào sẽ hiển thị với người khác.
             </p>
 
-            <div class="card mt-3" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#profileModal">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7"
-                        class="rounded-circle me-3" 
-                        style="width: 50px; height: 50px;" 
-                        alt="Avatar" 
-                        />
-
+            <div class="card mt-4">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center card-link" onclick="openEditModal('email')">
                         <div>
-                            <div class="fw-bold">Phạm Quốc Huy</div>
+                            <div class="fw-bold">Thông tin liên hệ</div>
+                            <small class="text-muted">quochuyks2k3@gmail.com, +84388978435</small>
                         </div>
-                    </div>
-                    <i class="fa fa-chevron-right text-muted"></i>
-                </div>
+                        <i class="fa fa-chevron-right text-muted"></i>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center card-link"  onclick="openBirthdayModal()">
+                        <div>
+                            <div class="fw-bold">Ngày sinh</div>
+                            <small class="text-muted">8 tháng 8, 2003</small>
+                        </div>
+                        <i class="fa fa-chevron-right text-muted"></i>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <!-- Profile Modal -->
-        <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
-                <div class="modal-content">
-                    <div class="modal-body text-center p-4">
-                        <!-- Avatar lớn -->
-                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7"
-                        class="rounded-circle mb-3 mt-5" 
-                        style="width: 100px; height: 100px;" 
-                        alt="Avatar">
-
-                        <h5 class="fw-bold mb-5">Phạm Quốc Huy</h5>
-
-                        <div class="list-group text-start mt-5">
-                            <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                                onclick="openChildModal('editNameModal')">
-                                Tên
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
-
-                            <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                                onclick="openChildModal('editAvatarModal')">
-                                Ảnh đại diện
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
-                        </div>
-
-                        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Edit Name Modal -->
-        <div class="modal fade" id="editNameModal" tabindex="-1" aria-hidden="true">
+        <!-- Modal chỉnh sửa Email/SĐT -->
+        <div class="modal fade" id="editContactModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                 <div class="modal-content">
                     <div class="modal-header border-0">
-                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="openProfileModalFromChild()">
+                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="backToInfoPage()">
                             <i class="fa fa-arrow-left fa-lg"></i>
                         </button>
-                        
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <h5 class="modal-title fw-bold text-center mb-4">Chỉnh sửa Họ và Tên</h5>
 
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
+                        <h5 class="fw-bold mb-3" id="editContactTitle">Chỉnh sửa Email</h5>
+                         <p class="text-muted small">
+                            Quản lý số di động và email để đảm bảo thông tin liên hệ của bạn chính xác và cập nhật.
+                        </p>
                         <div class="mb-3">
-                            <label for="fullNameInput" class="form-label">Họ và tên</label>
-                            <input type="text" class="form-control mb-3" placeholder="Phạm Văn A">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="fullNameInput" class="form-label">Bí Danh</label>
-                            <input type="text" class="form-control mb-3" placeholder="A Hay Hóng">
+                            <label id="contactLabel" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="contactInput" placeholder="">
                         </div>
 
                         <div class="text-center">
-                            <button class="btn btn-primary w-25">
+                            <button class="btn btn-primary w-100" onclick="openOtpModal()">
                                 Lưu thay đổi
                             </button>
                         </div>
@@ -125,35 +93,57 @@
             </div>
         </div>
 
-        <!-- Edit Avatar Modal -->
-        <div class="modal fade" id="editAvatarModal" tabindex="-1" aria-hidden="true">
+        <!-- Modal OTP -->
+        <div class="modal fade" id="otpModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                 <div class="modal-content">
                     <div class="modal-header border-0">
-                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="openProfileModalFromChild()">
+                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="backToEditModal()">
                             <i class="fa fa-arrow-left fa-lg"></i>
                         </button>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <h5 class="modal-title fw-bold mb-2 text-center">Chỉnh sửa ảnh đại diện</h5>
+                    <div class="modal-body p-4 text-center">
+                        <h5 class="fw-bold mb-3">Xác thực OTP</h5>
+                        <p class="text-muted small">
+                            Nhập mã OTP đã được gửi đến số điện thoại hoặc email của bạn.
+                        </p>
+                        <input type="text" class="form-control mb-4 mt-3" placeholder="Nhập mã OTP">
+                        <button class="btn btn-primary w-100">
+                            Xác nhận
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="modal-body text-center">
-                        <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7"
-                        class="rounded-circle mb-5" 
-                        style="width: 120px; height: 120px;" 
-                        alt="Avatar">
+        <!-- Modal chỉnh sửa Ngày sinh -->
+        <div class="modal fade" id="birthdayModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="closeBirthdayModal()">
+                            <i class="fa fa-arrow-left fa-lg"></i>
+                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
-                        <div class="mb-3 text-start">
-                            <input type="file" id="avatarFileInput" class="form-control d-none">
-                            <button type="button" class="edit-avatar-btn" onclick="document.getElementById('avatarFileInput').click();">
-                                Chỉnh sửa ảnh đại diện
-                            </button>
+                    <div class="modal-body p-4">
+                        <h5 class="fw-bold mb-3">Chỉnh sửa ngày sinh</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày sinh</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="birthdayInput" placeholder="dd/mm/yyyy">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
                         </div>
 
-                        <div class="text-center">
-                            <button class="btn btn-primary w-25">Lưu thay đổi</button>
-                        </div>
+                        <button class="btn btn-primary w-100" onclick="saveBirthday()">
+                            Lưu thay đổi
+                        </button>
                     </div>
                 </div>
             </div>
@@ -172,39 +162,78 @@
         }
     });
 
-    function openChildModal(childModalId) {
-        // Đóng profileModal trước
-        var modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
-        if (modal) modal.hide();
+    let currentEditing = '';
 
-        // Mở modal con sau 300ms
+    function openEditModal(type) {
+        currentEditing = type;
+        if (type === 'email') {
+            document.getElementById('editContactTitle').textContent = 'Chỉnh sửa Email';
+            document.getElementById('contactLabel').textContent = 'Email';
+            document.getElementById('contactInput').placeholder = 'Nhập email mới';
+        } else if (type === 'phone') {
+            document.getElementById('editContactTitle').textContent = 'Chỉnh sửa Số điện thoại';
+            document.getElementById('contactLabel').textContent = 'Số điện thoại';
+            document.getElementById('contactInput').placeholder = 'Nhập số điện thoại mới';
+        }
+        var modal = new bootstrap.Modal(document.getElementById('editContactModal'));
+        modal.show();
+    }
+
+    function openOtpModal() {
+        var editModal = bootstrap.Modal.getInstance(document.getElementById('editContactModal'));
+        if (editModal) editModal.hide();
+
         setTimeout(() => {
-            var childModal = new bootstrap.Modal(document.getElementById(childModalId));
-            childModal.show();
+            var otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
+            otpModal.show();
         }, 300);
     }
 
-    function openProfileModalFromChild() {
-        // Đóng tất cả modal đang mở
-        var openedModals = document.querySelectorAll('.modal.show');
-        openedModals.forEach(m => {
-            var inst = bootstrap.Modal.getInstance(m);
-            if (inst) inst.hide();
-        });
+    function backToEditModal() {
+        var otpModal = bootstrap.Modal.getInstance(document.getElementById('otpModal'));
+        if (otpModal) otpModal.hide();
 
-        // Mở lại modal profile sau 300ms
         setTimeout(() => {
-            var modal = new bootstrap.Modal(document.getElementById('profileModal'));
-            modal.show();
+            var editModal = new bootstrap.Modal(document.getElementById('editContactModal'));
+            editModal.show();
         }, 300);
     }
 
-    // Dọn backdrop sau khi bất kỳ modal đóng
+    function backToInfoPage() {
+        var editModal = bootstrap.Modal.getInstance(document.getElementById('editContactModal'));
+        if (editModal) editModal.hide();
+    }
+
+    // Dọn backdrop tránh treo màn đen
     document.querySelectorAll('.modal').forEach(modal => {
         modal.addEventListener('hidden.bs.modal', () => {
             document.body.classList.remove('modal-open');
             document.querySelectorAll('.modal-backdrop').forEach(e => e.remove());
         });
     });
+
+    function openBirthdayModal() {
+        var modal = new bootstrap.Modal(document.getElementById('birthdayModal'));
+        modal.show();
+
+        // Khởi tạo datepicker nếu chưa có
+        $('#birthdayInput').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            endDate: '0d'
+        });
+    }
+
+    function closeBirthdayModal() {
+        var modal = bootstrap.Modal.getInstance(document.getElementById('birthdayModal'));
+        if (modal) modal.hide();
+    }
+
+    function saveBirthday() {
+        let birthday = document.getElementById('birthdayInput').value;
+        console.log("Ngày sinh mới:", birthday);
+        closeBirthdayModal();
+    }
 
 </script>
