@@ -1,13 +1,12 @@
 const Users = require('../../models/Users');
 const Tasks = require('../../models/Tasks');
 const Projects = require('../../models/Projects');
-const { muntipleMongooseToObject } = require('../../../util/mongoose')
+const { muntipleMongooseToObject } = require('../../../util/mongoose');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 class SiteUserController {
-
     home(req, res) {
         res.render('user/home', {
             layout: 'user/index',
@@ -30,11 +29,10 @@ class SiteUserController {
         });
     }
 
-    // XỬ LÝ ĐĂNG KÝ
     async handleRegister(req, res) {
         try {
             const { fullName, phoneNumber, email, password, confirmPassword } = req.body;
-            let errors = {};
+            const errors = {};
 
             if (!fullName || fullName.trim() === "") {
                 errors.fullName = "Họ và tên không được để trống.";
@@ -50,17 +48,14 @@ class SiteUserController {
 
             if (!password) {
                 errors.password = "Mật khẩu không được để trống.";
-            } else {
-                if (
-                    password.length < 8 ||
-                    !/[A-Z]/.test(password) ||
-                    !/[a-z]/.test(password) ||
-                    !/[0-9]/.test(password) ||
-                    !/[^a-zA-Z0-9]/.test(password)
-                ) {
-                    errors.password =
-                        "Mật khẩu phải ít nhất 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt.";
-                }
+            } else if (
+                password.length < 8 ||
+                !/[A-Z]/.test(password) ||
+                !/[a-z]/.test(password) ||
+                !/[0-9]/.test(password) ||
+                !/[^a-zA-Z0-9]/.test(password)
+            ) {
+                errors.password = "Mật khẩu phải ít nhất 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt.";
             }
 
             if (password !== confirmPassword) {
@@ -68,138 +63,165 @@ class SiteUserController {
             }
 
             if (Object.keys(errors).length > 0) {
-                return res.render('user/register', {
-                    layout: false,
+                return res.status(400).json({
+                    success: false,
                     errors,
-                    userData: req.body,
-                    showOTPForm: false,
+                    userData: req.body
                 });
             }
 
-            // Kiểm tra email tồn tại
             const existingUser = await Users.findOne({ email });
             if (existingUser) {
-                return res.render('user/register', {
-                    layout: false,
-                    errors: {
-                        email: "Email đã được đăng ký.",
-                    },
-                    userData: req.body,
-                    showOTPForm: false,
+                return res.status(400).json({
+                    success: false,
+                    errors: { email: "Email đã được đăng ký." },
+                    userData: req.body
                 });
             }
 
-            // Mã hóa mật khẩu
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
-
-            // Sinh OTP ngẫu nhiên
             const otp = crypto.randomInt(100000, 999999).toString();
+            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // Hiệu lực 10 phút
 
-            // Lưu user
             const newUser = new Users({
                 fullName,
                 phoneNumber,
                 email,
                 password: hashedPassword,
                 otp,
+                otpExpiry,
                 isVerified: false,
             });
             await newUser.save();
 
-            // Gửi email OTP
-            await this.sendOTPEmail(email, otp);
+            // Thử gửi email, nhưng không ảnh hưởng đến logic chính
+            try {
+                await this.sendOTPEmail(email, otp, fullName);
+            } catch (emailErr) {
+                console.error("Failed to send OTP email:", emailErr.message, emailErr.stack);
+                // Không throw lỗi, tiếp tục trả về thành công
+            }
 
             return res.status(200).json({
                 success: true,
-                message: "Đăng ký thành công. Đã gửi OTP về email.",
+                message: "Đăng ký thành công. Đã gửi OTP về email (nếu email hoạt động).",
                 email,
             });
 
         } catch (err) {
-            console.log(err);
-            return res.status(500).render('user/register', {
-                layout: false,
+            console.error("Handle Register Error:", err.message, err.stack);
+            return res.status(500).json({
+                success: false,
                 errors: { general: "Có lỗi server. Vui lòng thử lại." },
-                userData: req.body,
-                showOTPForm: false,
+                userData: req.body
             });
         }
     }
 
-    // XỬ LÝ XÁC THỰC OTP
     async verifyOTP(req, res) {
         try {
             const { email, otp } = req.body;
-            const user = await Users.findOne({ email, otp });
+            const user = await Users.findOne({ email });
 
-            if (!user) {
-                return res.render('user/register', {
-                    layout: false,
-                    showOTPForm: true,
-                    email,
-                    errors: { otp: "OTP không đúng hoặc email chưa đăng ký." },
+            if (!user || user.otp !== otp || new Date() > user.otpExpiry) {
+                return res.status(400).json({
+                    success: false,
+                    message: "OTP không đúng hoặc đã hết hạn."
                 });
             }
 
             user.isVerified = true;
             user.otp = null;
+            user.otpExpiry = null;
             await user.save();
 
-            // Chuyển sang trang login
-            return res.redirect('/login');
+            return res.status(200).json({
+                success: true,
+                message: "Xác thực OTP thành công. Đang chuyển hướng..."
+            });
 
         } catch (err) {
-            console.log(err);
-            return res.render('user/register', {
-                layout: false,
-                showOTPForm: true,
-                email,
-                errors: { general: "Có lỗi server. Vui lòng thử lại." },
+            console.error(err);
+            return res.status(500).json({
+                success: false,
+                message: "Có lỗi server. Vui lòng thử lại."
             });
         }
     }
 
-    async sendOTPEmail(to, otp) {
+    async sendOTPEmail(to, otp, fullName) {
         let transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "your_email@gmail.com",
-                pass: "your_app_password",
+                user: process.env.EMAIL_USER || "contact.pqhuy@gmail.com",
+                pass: process.env.EMAIL_PASS || "nakc iriv ynyo rjoy",
             },
         });
 
-        await transporter.sendMail({
-            from: '"Work Manager" <your_email@gmail.com>',
+        const mailOptions = {
+            from: '"Work Manager" <contact.pqhuy@gmail.com>',
             to,
-            subject: "Mã xác thực OTP",
-            html: `<h3>Mã OTP của bạn là:</h3><h2 style="color:red">${otp}</h2>`
-        });
+            subject: "Xác Thực Mã OTP - Work Manager",
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+                    <h2 style="color: #2c3e50;">Chào ${fullName || "Quý khách"},</h2>
+                    <p>Cảm ơn bạn đã đăng ký tài khoản tại Work Manager. Để hoàn tất quá trình đăng ký, vui lòng sử dụng mã OTP (One-Time Password) sau:</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <h1 style="color: #e74c3c; font-size: 28px; letter-spacing: 2px; background-color: #f5f6fa; padding: 10px 20px; display: inline-block;">${otp}</h1>
+                    </div>
+                    <p>Vui lòng nhập mã này vào biểu mẫu xác thực trên trang đăng ký. Lưu ý rằng mã OTP chỉ có hiệu lực trong <strong>10 phút</strong>. Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này hoặc liên hệ với chúng tôi ngay lập tức.</p>
+                    <p style="margin-top: 20px;">Trân trọng,<br>Đội ngũ Work Manager<br><a href="mailto:support@workmanager.com" style="color: #3498db;">support@workmanager.com</a></p>
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="font-size: 12px; color: #7f8c8d;">Đây là email tự động, vui lòng không trả lời trực tiếp.</p>
+                </div>
+            `,
+        };
+
+        console.log("Attempting to send email to:", to, "with OTP:", otp);
+        await transporter.sendMail(mailOptions);
+        console.log("Email sent successfully to:", to);
     }
 
-    // [POST] /register/resend-otp
     async resendOTP(req, res) {
         const { email } = req.body;
         try {
             const user = await Users.findOne({ email });
 
             if (!user || user.isVerified) {
-                return res.status(400).json({ success: false, message: "Email không tồn tại hoặc đã xác minh." });
+                return res.status(400).json({
+                    success: false,
+                    message: "Email không tồn tại hoặc đã xác minh."
+                });
             }
 
-            const otp = crypto.randomInt(100000, 999999).toString();
-            user.otp = otp;
+            // Tạo mã OTP mới và vô hiệu hóa OTP cũ
+            const newOtp = crypto.randomInt(100000, 999999).toString();
+            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // Hiệu lực 10 phút
+            user.otp = newOtp;
+            user.otpExpiry = otpExpiry;
             await user.save();
 
-            await this.sendOTPEmail(email, otp);
+            // Thử gửi email, nhưng không ảnh hưởng đến logic chính
+            try {
+                await this.sendOTPEmail(email, newOtp, user.fullName);
+            } catch (emailErr) {
+                console.error("Failed to resend OTP email:", emailErr.message, emailErr.stack);
+                // Không throw lỗi, tiếp tục trả về thành công
+            }
 
-            return res.json({ success: true, message: "Đã gửi lại OTP." });
+            return res.json({
+                success: true,
+                message: "Đã gửi lại OTP (nếu email hoạt động)."
+            });
         } catch (err) {
             console.error(err);
-            return res.status(500).json({ success: false, message: "Lỗi server." });
+            return res.status(500).json({
+                success: false,
+                message: "Lỗi server."
+            });
         }
     }
-
 
     forgotPassword(req, res) {
         res.render('user/forgotPasword', {

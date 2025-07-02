@@ -41,7 +41,6 @@ document.getElementById("registerForm").addEventListener("submit", function(e) {
             });
         }
     })
-
     .catch(err => {
         console.error(err);
         alert("Lỗi hệ thống.");
@@ -81,72 +80,73 @@ document.getElementById("backToRegister").addEventListener("click", function() {
     document.getElementById("registerForm").style.display = "block";
 });
 
-// Toggle password
-document.getElementById("togglePassword").addEventListener("click", function () {
-    const pw = document.getElementById("password");
-    const type = pw.type === "password" ? "text" : "password";
-    pw.type = type;
-    this.querySelector("i").classList.toggle("fa-eye");
-    this.querySelector("i").classList.toggle("fa-eye-slash");
+// Thêm toggle mật khẩu (đổi tên để tránh trùng)
+const passInput = document.getElementById('password');
+const passToggle = document.getElementById('togglePassword');
+passToggle.addEventListener('click', function () {
+    const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passInput.setAttribute('type', type);
+    this.querySelector('i').classList.toggle('fa-eye');
+    this.querySelector('i').classList.toggle('fa-eye-slash');
 });
 
-document.getElementById("toggleConfirmPassword").addEventListener("click", function () {
-    const pw = document.getElementById("confirmPassword");
-    const type = pw.type === "password" ? "text" : "password";
-    pw.type = type;
-    this.querySelector("i").classList.toggle("fa-eye");
-    this.querySelector("i").classList.toggle("fa-eye-slash");
+const confirmPassInput = document.getElementById('confirmPassword');
+const confirmPassToggle = document.getElementById('toggleConfirmPassword');
+confirmPassToggle.addEventListener('click', function () {
+    const type = confirmPassInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPassInput.setAttribute('type', type);
+    this.querySelector('i').classList.toggle('fa-eye');
+    this.querySelector('i').classList.toggle('fa-eye-slash');
 });
-
 
 let countdown = 30;
-  const resendBtn = document.getElementById('resendOTPBtn');
-  const countdownSpan = document.getElementById('countdown');
-  const email = "{{email}}";
+const resendBtn = document.getElementById('resendOTPBtn');
+const countdownSpan = document.getElementById('countdown');
+const email = "{{email}}";
 
-  const timer = setInterval(() => {
+const timer = setInterval(() => {
     countdown--;
     countdownSpan.textContent = countdown;
     if (countdown <= 0) {
-      resendBtn.disabled = false;
-      resendBtn.textContent = "Gửi lại mã OTP";
-      clearInterval(timer);
+        resendBtn.disabled = false;
+        resendBtn.textContent = "Gửi lại mã OTP";
+        clearInterval(timer);
     }
-  }, 1000);
+}, 1000);
 
-  resendBtn.addEventListener("click", async function (e) {
+resendBtn.addEventListener("click", async function (e) {
     e.preventDefault();
     resendBtn.disabled = true;
     resendBtn.textContent = "Đang gửi lại...";
 
     try {
-      const response = await fetch("/register/resend-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email })
-      });
+        const response = await fetch("/register/resend-otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email })
+        });
 
-      const data = await response.json();
-      if (data.success) {
-        countdown = 30;
-        resendBtn.textContent = "Gửi lại mã OTP (30s)";
-        countdownSpan.textContent = countdown;
-        const restartTimer = setInterval(() => {
-          countdown--;
-          countdownSpan.textContent = countdown;
-          if (countdown <= 0) {
-            resendBtn.disabled = false;
-            resendBtn.textContent = "Gửi lại mã OTP";
-            clearInterval(restartTimer);
-          }
-        }, 1000);
-      } else {
-        resendBtn.textContent = "Lỗi gửi lại!";
-      }
+        const data = await response.json();
+        if (data.success) {
+            countdown = 30;
+            resendBtn.textContent = "Gửi lại mã OTP (30s)";
+            countdownSpan.textContent = countdown;
+            const restartTimer = setInterval(() => {
+                countdown--;
+                countdownSpan.textContent = countdown;
+                if (countdown <= 0) {
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = "Gửi lại mã OTP";
+                    clearInterval(restartTimer);
+                }
+            }, 1000);
+        } else {
+            resendBtn.textContent = "Lỗi gửi lại!";
+        }
     } catch (err) {
-      console.error("Lỗi gửi lại OTP:", err);
-      resendBtn.textContent = "Lỗi kết nối!";
+        console.error("Lỗi gửi lại OTP:", err);
+        resendBtn.textContent = "Lỗi kết nối!";
     }
-  });
+});

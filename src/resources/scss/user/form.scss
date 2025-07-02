@@ -28,3 +28,21 @@ body {
 .font-size-forgot {
     font-size: 0.75rem;
 }
+
+.input-group {
+    position: relative;
+}
+.form-control {
+    padding-right: 40px;
+}
+.toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+}
