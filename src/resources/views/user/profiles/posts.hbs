@@ -1,0 +1,46 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-4 text-center">
+            <div class="cover-wrapper-profile mt-4">
+                <img 
+                    src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"                    id="avatarPhoto"
+                    class="avatar-img-profile"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    alt="Avatar"
+                    style="cursor: pointer;"
+                >
+            </div>
+            
+            <div>
+                <h2 class="profile-name mb-0">PhẠm QuỐc HuY</h2>
+                <small class="text-muted">100 Đồng nghiệp</small>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mt-3" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="posts-tab" href="/profile/{{user._id}}/posts" role="tab" aria-selected="false">Bài viết</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="about-tab" href="/profile/{{user._id}}/about" role="tab" aria-selected="true">Giới thiệu</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="dashboard-tab" href="/profile/{{user._id}}/dashboard" role="tab" aria-selected="false">Bảng điều khiển</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="photos-tab" href="/profile/{{user._id}}/photos" role="tab" aria-selected="false">Ảnh</a>
+                </li>
+            </ul>
+                
+            <div class="tab-content p-3 bg-white border border-top-0 rounded-bottom mb-5" id="profileTabsContent">
+                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                    <h5>Bài viết</h5>
+                    <p>Hiển thị các bài viết ở đây...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

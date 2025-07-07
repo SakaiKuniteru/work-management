@@ -1,0 +1,62 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-4 text-center">
+            <div class="cover-wrapper-profile mt-4">
+                <img 
+                    src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"                    id="avatarPhoto"
+                    class="avatar-img-profile"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    alt="Avatar"
+                    style="cursor: pointer;"
+                >
+            </div>
+            
+            <div>
+                <h2 class="profile-name mb-0">PhẠm QuỐc HuY</h2>
+                <small class="text-muted">100 Đồng nghiệp</small>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mt-3" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="posts-tab" href="/profile/{{user._id}}/posts" role="tab" aria-selected="false">Bài viết</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="about-tab" href="/profile/{{user._id}}/about" role="tab" aria-selected="true">Giới thiệu</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="dashboard-tab" href="/profile/{{user._id}}/dashboard" role="tab" aria-selected="false">Bảng điều khiển</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="photos-tab" href="/profile/{{user._id}}/photos" role="tab" aria-selected="false">Ảnh</a>
+                </li>
+            </ul>
+
+            <div class="tab-content p-3 bg-white border border-top-0 rounded-bottom mb-5" id="profileTabsContent">
+                <div class="tab-pane fade show active" id="photos" role="tabpanel" aria-labelledby="photos-tab">
+                    <h5>Ảnh</h5>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 1">
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 2">
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 3">
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

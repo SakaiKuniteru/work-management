@@ -184,3 +184,21 @@
 .modal-backdrop.show {
     opacity: 0.5;
 }
+
+.cover-wrapper-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    position: relative;
+    margin-bottom: 70px;
+}
+
+.avatar-img-profile {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+}

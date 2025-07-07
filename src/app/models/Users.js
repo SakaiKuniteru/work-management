@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Users = new Schema({
-    fullName: { type: String, required: true },            // Họ tên
-    email: { type: String, unique: true, required: true }, // Email
-    password: { type: String, required: true },            // Mật khẩu đã mã hóa
-    phoneNumber: { type: String },                         // Số điện thoại
-    avatar: { type: String },                              // Ảnh đại diện
-    coverPhoto: { type: String },                          // Ảnh bìa
-    dateOfBirth: { type: Date },                           // Ngày sinh
-    gender: { type: String, enum: ['Male', 'Female', 'Other'] }, 
+    fullName: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    phoneNumber: { type: String },
+    avatar: { type: String },
+    coverPhoto: { type: String },
+    dateOfBirth: { type: Date },
+    gender: { type: String }, 
     age: { type: Number },                                
-    maritalStatus: { type: String, enum: ['Single', 'Married', 'Divorced', 'Widowed'] }, 
+    maritalStatus: { type: String }, 
     position: { type: String },                           
     employeeId: { type: String },                         
     currentAddress: { type: String },                     
@@ -23,10 +23,10 @@ const Users = new Schema({
         instagram: { type: String },
         twitter: { type: String },
         linkedin: { type: String },
-        others: { type: String }
+        others: [{ name: String, link: String }]
     },
     slug: { type: String, unique: true },                 
-
+    photos: [{ type: String }],
     otp: { type: String },                                // Mã OTP tạm
     isVerified: { type: Boolean, default: false },        // Tài khoản đã kích hoạt hay chưa
 

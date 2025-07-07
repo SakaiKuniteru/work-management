@@ -1,0 +1,116 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-4 text-center">
+            <div class="cover-wrapper-profile mt-4">
+                <img 
+                    src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"                    id="avatarPhoto"
+                    class="avatar-img-profile"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    alt="Avatar"
+                    style="cursor: pointer;"
+                >
+            </div>
+
+            <div>
+                <h2 class="profile-name mb-0">PhẠm QuỐc HuY</h2>
+                <small class="text-muted">100 Đồng nghiệp</small>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mt-3" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="posts-tab" href="/profile/{{user._id}}/posts" role="tab" aria-selected="false">Bài viết</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="about-tab" href="/profile/{{user._id}}/about" role="tab" aria-selected="true">Giới thiệu</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="dashboard-tab" href="/profile/{{user._id}}/dashboard" role="tab" aria-selected="false">Bảng điều khiển</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="photos-tab" href="/profile/{{user._id}}/photos" role="tab" aria-selected="false">Ảnh</a>
+                </li>
+            </ul>
+
+            <div class="tab-content p-3 bg-white border border-top-0 rounded-bottom mb-5" id="profileTabsContent">
+                <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th scope="row" style="width: 200px;">Họ tên</th>
+                                <td>{{user.fullName}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bí danh</th>
+                                <td>{{user.nickname}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Tuổi</th>
+                                <td>{{user.age}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Ngày sinh</th>
+                                <td>{{user.formattedDateOfBirth}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Giới tính</th>
+                                <td>{{user.gender}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Tình trạng hôn nhân</th>
+                                <td>{{user.maritalStatus}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Chức vụ</th>
+                                <td>{{user.position}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Mã nhân viên</th>
+                                <td>{{user.employeeId}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Số điện thoại</th>
+                                <td>{{user.phoneNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td>
+                                    <a href="mailto:{{user.email}}">{{user.email}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Nơi ở hiện tại</th>
+                                <td>{{user.currentAddress}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Quê quán</th>
+                                <td>{{user.hometown}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sở thích</th>
+                                <td>{{user.hobbiesString}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Mạng xã hội</th>
+                                <td>
+                                    <a href="{{user.socialMedia.facebook}}">Facebook</a> ·
+                                    <a href="{{user.socialMedia.linkedin}}">LinkedIn</a> ·
+                                    <a href="{{user.socialMedia.instagram}}">Instagram</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center">
+                        <a href="/profile/{{user._id}}/edit" class="btn btn-success" id="editInfoBtn">
+                            Sửa thông tin
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

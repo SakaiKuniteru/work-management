@@ -1,0 +1,267 @@
+<div class="container mt-3 mb-5">
+    <h2 class="mb-4">Sửa thông tin cá nhân</h2>
+    <form id="editInfoForm" action="/profile/{{user._id}}/edit" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" value="{{user.fullName}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" value="{{user.email}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" value="{{user.phoneNumber}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ngày sinh</label>
+                    <input type="date" class="form-control" name="dateOfBirth" value="{{user.formattedDateOfBirth}}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Giới tính</label>
+                    <select class="form-select" name="gender">
+                        <option value="Nam" {{#if (eq user.gender "Nam")}}selected{{/if}}>Nam</option>
+                        <option value="Nữ" {{#if (eq user.gender "Nữ")}}selected{{/if}}>Nữ</option>
+                        <option value="Khác" {{#if (eq user.gender "Khác")}}selected{{/if}}>Khác</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tình trạng hôn nhân</label>
+                    <select class="form-select" name="maritalStatus" id="maritalStatusSelect">
+                        <option value="Độc thân">Độc thân</option>
+                        <option value="Đã kết hôn">Đã kết hôn</option>
+                        <option value="Hẹn hò">Hẹn hò</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Chức vụ</label>
+                    <input type="text" class="form-control" name="position" value="{{user.position}}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mã nhân viên</label>
+                    <input type="text" class="form-control" name="employeeId" value="{{user.employeeId}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Nơi ở hiện tại</label>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <select class="form-select" id="currentProvince" name="currentProvince">
+                                <option value="">Chọn tỉnh/thành phố</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="currentDistrict" name="currentDistrict" disabled>
+                                <option value="">Chọn quận/huyện</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="currentWard" name="currentWard" disabled>
+                                <option value="">Chọn xã/phường</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Quê quán</label>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                        <select class="form-select" id="hometownProvince" name="hometownProvince">
+                            <option value="">Chọn tỉnh/thành phố</option>
+                        </select>
+                        </div>
+                        <div class="col-md-4">
+                        <select class="form-select" id="hometownDistrict" name="hometownDistrict" disabled>
+                            <option value="">Chọn quận/huyện</option>
+                        </select>
+                        </div>
+                        <div class="col-md-4">
+                        <select class="form-select" id="hometownWard" name="hometownWard" disabled>
+                            <option value="">Chọn xã/phường</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Bí danh</label>
+                    <input type="text" class="form-control" name="nickname" value="{{user.nickname}}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sở thích</label>
+                    <div class="row" id="hobbiesContainer">
+                        <!-- Checkbox sẽ được JS sinh ra ở đây -->
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Facebook</label>
+                    <input type="text" class="form-control" name="socialMedia[facebook]" value="{{user.socialMedia.facebook}}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">LinkedIn</label>
+                    <input type="text" class="form-control" name="socialMedia[linkedin]" value="{{user.socialMedia.linkedin}}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Instagram</label>
+                    <input type="text" class="form-control" name="socialMedia[instagram]" value="{{user.socialMedia.instagram}}">
+                </div>
+                
+            </div>
+            <div class="text-center">
+                <a href="/profile/{{user._id}}/about" class="btn btn-secondary ms-2">Quay lại</a>
+                <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                    
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Dữ liệu đã chọn sẵn (nếu đang edit profile)
+  const selectedCurrentProvince = "{{user.currentProvince}}";
+  const selectedCurrentDistrict = "{{user.currentDistrict}}";
+  const selectedCurrentWard = "{{user.currentWard}}";
+
+  const selectedHometownProvince = "{{user.hometownProvince}}";
+  const selectedHometownDistrict = "{{user.hometownDistrict}}";
+  const selectedHometownWard = "{{user.hometownWard}}";
+
+  // Load province cho cả hai dropdown
+  loadProvinces('current');
+  loadProvinces('hometown');
+
+  function loadProvinces(type) {
+    fetch('https://provinces.open-api.vn/api/p/')
+      .then(res => res.json())
+      .then(data => {
+        const provinceSelect = document.getElementById(`${type}Province`);
+        data.forEach(province => {
+          const option = document.createElement('option');
+          option.value = province.code;
+          option.textContent = province.name;
+          if (province.name === (type === 'current' ? selectedCurrentProvince : selectedHometownProvince)) {
+            option.selected = true;
+            loadDistricts(province.code, type);
+          }
+          provinceSelect.appendChild(option);
+        });
+      });
+
+    document.getElementById(`${type}Province`).addEventListener('change', (e) => {
+      const provinceCode = e.target.value;
+      clearSelect(`${type}District`);
+      clearSelect(`${type}Ward`);
+      if (provinceCode) {
+        loadDistricts(provinceCode, type);
+      }
+    });
+  }
+
+  function loadDistricts(provinceCode, type) {
+    fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`)
+      .then(res => res.json())
+      .then(data => {
+        const districtSelect = document.getElementById(`${type}District`);
+        districtSelect.disabled = false;
+        data.districts.forEach(district => {
+          const option = document.createElement('option');
+          option.value = district.code;
+          option.textContent = district.name;
+          if (district.name === (type === 'current' ? selectedCurrentDistrict : selectedHometownDistrict)) {
+            option.selected = true;
+            loadWards(district.code, type);
+          }
+          districtSelect.appendChild(option);
+        });
+      });
+
+    document.getElementById(`${type}District`).addEventListener('change', (e) => {
+      const districtCode = e.target.value;
+      clearSelect(`${type}Ward`);
+      if (districtCode) {
+        loadWards(districtCode, type);
+      }
+    });
+  }
+
+  function loadWards(districtCode, type) {
+    fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`)
+      .then(res => res.json())
+      .then(data => {
+        const wardSelect = document.getElementById(`${type}Ward`);
+        wardSelect.disabled = false;
+        data.wards.forEach(ward => {
+          const option = document.createElement('option');
+          option.value = ward.name;
+          option.textContent = ward.name;
+          if (ward.name === (type === 'current' ? selectedCurrentWard : selectedHometownWard)) {
+            option.selected = true;
+          }
+          wardSelect.appendChild(option);
+        });
+      });
+  }
+
+  function clearSelect(id) {
+    const select = document.getElementById(id);
+    select.innerHTML = `<option value="">Chọn ${select.name === "currentProvince" || select.name === "hometownProvince" ? 'tỉnh/thành phố' : (select.name.includes("District") ? 'quận/huyện' : 'xã/phường')}</option>`;
+    select.disabled = true;
+  }
+    const hobbiesList = [
+  "Đọc sách",
+  "Nghe nhạc",
+  "Du lịch",
+  "Nấu ăn",
+  "Chụp ảnh",
+  "Thể thao",
+  "Xem phim",
+  "Mua sắm",
+  "Chơi game",
+  "Lập trình",
+  "Viết lách",
+  "Vẽ tranh",
+  "Tập gym",
+  "Yoga",
+  "Cắm trại"
+];
+
+// ✅ Lấy và xử lý chuỗi từ thuộc tính data
+const container = document.getElementById("hobbiesContainer");
+const selectedString = container.dataset.selected || "";
+const selectedHobbies = selectedString.split(",").map(h => h.trim());
+
+hobbiesList.forEach((hobby, index) => {
+  const col = document.createElement("div");
+  col.className = "col-md-4";
+
+  const div = document.createElement("div");
+  div.className = "form-check";
+
+  const input = document.createElement("input");
+  input.className = "form-check-input";
+  input.type = "checkbox";
+  input.id = `hobby-${index}`;
+  input.name = "hobbies";
+  input.value = hobby;
+
+  if (selectedHobbies.includes(hobby)) {
+    input.checked = true;
+  }
+
+  const label = document.createElement("label");
+  label.className = "form-check-label";
+  label.setAttribute("for", `hobby-${index}`);
+  label.textContent = hobby;
+
+  div.appendChild(input);
+  div.appendChild(label);
+  col.appendChild(div);
+  container.appendChild(col);
+});
+
+  
+</script>
