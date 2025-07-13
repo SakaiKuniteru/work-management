@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 const { create: handlebarsCreate } = require('express-handlebars');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const SortMiddleware = require('./app/middlewares/SortMiddleware');
 
 const { request } = require('http');
 const app = express();
@@ -23,6 +24,7 @@ db.connect().then(() => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
+app.use(SortMiddleware);
 app.use(express.json());
 
 app.use(

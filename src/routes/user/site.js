@@ -5,10 +5,10 @@ const siteUserController = require('../../app/controllers/UserControllers/SiteCo
 routerUser.get('/information', siteUserController.noCache, siteUserController.requireLogin, siteUserController.information);
 routerUser.get('/password-security', siteUserController.noCache, siteUserController.requireLogin, siteUserController.password_security);
 routerUser.get('/setting/', siteUserController.noCache, siteUserController.requireLogin, siteUserController.setting);
-routerUser.get('/profile/:id/edit', siteUserController.noCache, siteUserController.requireLogin, siteUserController.getEditInfo);
-routerUser.post('/profile/:id/edit', siteUserController.noCache, siteUserController.requireLogin, siteUserController.updateInfo);
-routerUser.post('/profile/:id/update-avatar', siteUserController.noCache, siteUserController.requireLogin, siteUserController.uploadAvatar, siteUserController.updateAvatar);
-routerUser.post('/profile/:id/update-cover', siteUserController.noCache, siteUserController.requireLogin, siteUserController.uploadCover, siteUserController.updateCoverPhoto);
+routerUser.get('/profile/:id/edit', siteUserController.noCache, siteUserController.requireLogin, siteUserController.edit);
+routerUser.put('/profile/:id', siteUserController.noCache, siteUserController.requireLogin, siteUserController.update);
+// routerUser.post('/profile/:id/update-avatar', siteUserController.noCache, siteUserController.requireLogin, siteUserController.uploadAvatar, siteUserController.updateAvatar);
+// routerUser.post('/profile/:id/update-cover', siteUserController.noCache, siteUserController.requireLogin, siteUserController.uploadCover, siteUserController.updateCoverPhoto);
 routerUser.get('/profile/:id/photos', siteUserController.noCache, siteUserController.requireLogin, siteUserController.photos);
 routerUser.get('/profile/:id/dashboard', siteUserController.noCache, siteUserController.requireLogin, siteUserController.dashboard);
 routerUser.get('/profile/:id/about', siteUserController.noCache, siteUserController.requireLogin, siteUserController.about);

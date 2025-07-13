@@ -48,10 +48,6 @@
                                 <td>{{user.nickname}}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Tuổi</th>
-                                <td>{{user.age}}</td>
-                            </tr>
-                            <tr>
                                 <th scope="row">Ngày sinh</th>
                                 <td>{{user.formattedDateOfBirth}}</td>
                             </tr>
@@ -83,11 +79,11 @@
                             </tr>
                             <tr>
                                 <th scope="row">Nơi ở hiện tại</th>
-                                <td>{{user.currentAddress}}</td>
+                                <td>{{user.currentProvince}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Quê quán</th>
-                                <td>{{user.hometown}}</td>
+                                <td>{{user.hometownProvince}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Sở thích</th>
@@ -96,9 +92,10 @@
                             <tr>
                                 <th scope="row">Mạng xã hội</th>
                                 <td>
-                                    <a href="{{user.socialMedia.facebook}}">Facebook</a> ·
-                                    <a href="{{user.socialMedia.linkedin}}">LinkedIn</a> ·
-                                    <a href="{{user.socialMedia.instagram}}">Instagram</a>
+                                    <a href="{{#if user.socialMedia.facebook}}https://{{user.socialMedia.facebook}}{{else}}#{{/if}}" target="_blank">Facebook</a> ·
+                                    <a href="{{#if user.socialMedia.linkedin}}https://{{user.socialMedia.linkedin}}{{else}}#{{/if}}" target="_blank">LinkedIn</a> ·
+                                    <a href="{{#if user.socialMedia.instagram}}https://{{user.socialMedia.instagram}}{{else}}#{{/if}}" target="_blank">Instagram</a>
+
                                 </td>
                             </tr>
                         </tbody>

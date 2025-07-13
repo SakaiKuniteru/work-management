@@ -1,7 +1,8 @@
 const Users = require('../../models/Users');
 const Tasks = require('../../models/Tasks');
 const Projects = require('../../models/Projects');
-const { muntipleMongooseToObject } = require('../../../util/mongoose');
+// const { muntipleMongooseToObject } = require('../../../util/mongoose');
+const { mongooseToObject } = require('../../../util/mongoose')
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -474,97 +475,6 @@ class SiteUserController {
         });
     }
 
-    // async profile(req, res) {
-    //     try {
-    //         // Kiểm tra xem người dùng đã đăng nhập chưa
-    //         if (!req.session || !req.session.user) {
-    //             return res.redirect('/login?redirect=true');
-    //         }
-
-    //         // Lấy thông tin người dùng từ database dựa trên session.user.id
-    //         const user = await Users.findById(req.session.user.id).lean();
-
-    //         if (!user) {
-    //             // Nếu không tìm thấy user, xóa session và chuyển hướng về login
-    //             req.session.destroy();
-    //             return res.redirect('/login?redirect=true');
-    //         }
-
-    //         // Chuyển đổi định dạng ngày sinh
-    //         if (user.dateOfBirth) {
-    //             user.formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString('vi-VN');
-    //         }
-
-    //         // Chuyển đổi danh sách sở thích thành chuỗi
-    //         if (user.hobbies && Array.isArray(user.hobbies)) {
-    //             user.hobbiesString = user.hobbies.join(', ');
-    //         }
-
-    //         // Chuẩn bị dữ liệu cho template
-    //         res.render('user/profiles/profile', {
-    //             layout: 'user/index',
-    //             title: 'Trang cá nhân',
-    //             session: req.session,
-    //             user: user
-    //         });
-    //     } catch (err) {
-    //         console.error('Lỗi khi lấy thông tin hồ sơ:', err.message, err.stack);
-    //         res.status(500).render('user/login', {
-    //             layout: false,
-    //             errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
-    //             loginData: {}
-    //         });
-    //     }
-    // }
-
-    // async updateAvatar(req, res) {
-    //     try {
-    //         if (!req.session || !req.session.user) {
-    //             return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-    //         }
-
-    //         const user = await Users.findById(req.session.user.id);
-    //         if (!user) {
-    //             return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-    //         }
-
-    //         // Lưu URL ảnh
-    //         user.avatar = `/uploads/${req.file.filename}`;
-    //         await user.save();
-
-    //         // Cập nhật session
-    //         req.session.user.avatar = user.avatar;
-
-    //         res.json({ success: true, avatar: user.avatar });
-    //     } catch (err) {
-    //         console.error('Lỗi cập nhật ảnh đại diện:', err.message, err.stack);
-    //         res.status(500).json({ success: false, message: 'Có lỗi server.' });
-    //     }
-    // }
-
-    // async updateCoverPhoto(req, res) {
-    //     try {
-    //         if (!req.session || !req.session.user) {
-    //             return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-    //         }
-
-    //         const user = await Users.findById(req.session.user.id);
-    //         if (!user) {
-    //             return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-    //         }
-
-    //         // Lưu URL ảnh
-    //         user.coverPhoto = `/uploads/${req.file.filename}`;
-    //         await user.save();
-
-    //         res.json({ success: true, coverPhoto: user.coverPhoto });
-    //     } catch (err) {
-    //         console.error('Lỗi cập nhật ảnh bìa:', err.message, err.stack);
-    //         res.status(500).json({ success: false, message: 'Có lỗi server.' });
-    //     }
-    // }
-
-    // Các trang profile
     async posts(req, res) {
         try {
             if (!req.session || !req.session.user) {
@@ -623,11 +533,15 @@ class SiteUserController {
                 user.hobbiesString = user.hobbies.join(', ');
             }
 
+            // Kiểm tra thông báo thành công từ query parameter
+            const success = req.query.success === 'true';
+
             res.render('user/profiles/about', {
                 layout: 'user/index',
                 title: 'Giới thiệu',
                 session: req.session,
-                user: user
+                user: user,
+                success: success // Truyền biến success để hiển thị thông báo
             });
         } catch (err) {
             console.error('Lỗi khi lấy trang Giới thiệu:', err.message, err.stack);
@@ -779,91 +693,334 @@ class SiteUserController {
         }
     }
 
-    async getEditInfo(req, res) {
-        try {
-            if (!req.session || !req.session.user) {
-                return res.redirect('/login?redirect=true');
+//     // async getEditInfo(req, res) {
+//     //     try {
+//     //         if (!req.session || !req.session.user) {
+//     //             return res.redirect('/login?redirect=true');
+//     //         }
+
+//     //         const { id } = req.params;
+//     //         const user = await Users.findById(id).lean();
+//     //         if (!user) {
+//     //             req.session.destroy();
+//     //             return res.redirect('/login?redirect=true');
+//     //         }
+
+//     //         if (user.dateOfBirth) {
+//     //             user.formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split('T')[0];
+//     //         }
+
+//     //         // Tách currentAddress thành các thành phần
+//     //         if (user.currentAddress) {
+//     //             const [ward, district, province] = user.currentAddress.split(', ').reverse();
+//     //             user.currentWard = ward || '';
+//     //             user.currentDistrict = district || '';
+//     //             user.currentProvince = province || '';
+//     //         } else {
+//     //             user.currentWard = '';
+//     //             user.currentDistrict = '';
+//     //             user.currentProvince = '';
+//     //         }
+
+//     //         // Tách hometown thành các thành phần
+//     //         if (user.hometown) {
+//     //             const [ward, district, province] = user.hometown.split(', ').reverse();
+//     //             user.hometownWard = ward || '';
+//     //             user.hometownDistrict = district || '';
+//     //             user.hometownProvince = province || '';
+//     //         } else {
+//     //             user.hometownWard = '';
+//     //             user.hometownDistrict = '';
+//     //             user.hometownProvince = '';
+//     //         }
+
+//     //         res.render('user/profiles/editprofile', {
+//     //             layout: 'user/index',
+//     //             title: 'Chỉnh sửa thông tin',
+//     //             session: req.session,
+//     //             user: user
+//     //         });
+//     //     } catch (err) {
+//     //         console.error('Lỗi khi lấy trang chỉnh sửa thông tin:', err.message, err.stack);
+//     //         res.status(500).render('user/login', {
+//     //             layout: false,
+//     //             errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+//     //             loginData: {}
+//     //         });
+//     //     }
+//     // }
+
+//     // async updateInfo(req, res) {
+//     //     try {
+//     //         if (!req.session || !req.session.user) {
+//     //             return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
+//     //         }
+
+//     //         const { id } = req.params;
+//     //         const user = await Users.findById(id);
+//     //         if (!user) {
+//     //             return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
+//     //         }
+
+//     //         const {
+//     //             dateOfBirth,
+//     //             gender,
+//     //             maritalStatus,
+//     //             position,
+//     //             employeeId,
+//     //             nickname,
+//     //             socialMedia,
+//     //             currentProvince,
+//     //             currentDistrict,
+//     //             currentWard,
+//     //             hometownProvince,
+//     //             hometownDistrict,
+//     //             hometownWard,
+//     //             hobbies
+//     //         } = req.body;
+
+//     //         // Xử lý hobbies: có thể là mảng hoặc chuỗi từ checkbox
+//     //         let hobbiesArray = [];
+//     //         if (Array.isArray(hobbies)) {
+//     //             hobbiesArray = hobbies.map(h => h.trim()).filter(h => h); // Loại bỏ giá trị rỗng
+//     //         } else if (typeof hobbies === 'string' && hobbies.length > 0) {
+//     //             hobbiesArray = hobbies.split(',').map(h => h.trim()).filter(h => h);
+//     //         }
+
+//     //         // Cập nhật các trường chỉ khi có giá trị
+//     //         if (dateOfBirth) user.dateOfBirth = new Date(dateOfBirth);
+//     //         if (gender) user.gender = gender;
+//     //         if (maritalStatus) user.maritalStatus = maritalStatus;
+//     //         if (position) user.position = position;
+//     //         if (employeeId) user.employeeId = employeeId;
+//     //         if (nickname) user.nickname = nickname;
+//     //         if (hobbiesArray.length > 0) user.hobbies = hobbiesArray;
+
+//     //         // Xử lý địa chỉ hiện tại
+//     //         const currentAddress = [currentWard, currentDistrict, currentProvince].filter(Boolean).join(', ');
+//     //         if (currentAddress) user.currentAddress = currentAddress;
+
+//     //         // Xử lý quê quán
+//     //         const hometown = [hometownWard, hometownDistrict, hometownProvince].filter(Boolean).join(', ');
+//     //         if (hometown) user.hometown = hometown;
+
+//     //         // Xử lý socialMedia
+//     //         const safeSocialMedia = socialMedia || {};
+//     //         user.socialMedia = {
+//     //             facebook: safeSocialMedia.facebook || '',
+//     //             linkedin: safeSocialMedia.linkedin || '',
+//     //             instagram: safeSocialMedia.instagram || ''
+//     //         };
+
+//     //         await user.save();
+
+//     //         // Cập nhật session nếu cần
+//     //         req.session.user = {
+//     //             ...req.session.user,
+//     //             fullName: user.fullName,
+//     //             email: user.email
+//     //         };
+
+//     //         // Chuyển hướng về trang about với thông báo thành công
+//     //         res.redirect(`/profile/${id}/about?success=true`);
+//     //     } catch (err) {
+//     //         console.error('Lỗi khi cập nhật thông tin:', err.message, err.stack);
+//     //         res.status(500).json({ success: false, message: 'Có lỗi server.' });
+//     //     }
+//     // }
+
+// // [GET] /profile/:id/edit
+// getEditInfo(req, res, next) {
+//     if (!req.session || !req.session.user) {
+//         return res.redirect('/login?redirect=true');
+//     }
+
+//     const { id } = req.params;
+//     Users.findById(id)
+//         .lean()
+//         .then(user => {
+//             if (!user) {
+//                 req.session.destroy();
+//                 return res.redirect('/login?redirect=true');
+//             }
+
+//             if (user.dateOfBirth) {
+//                 user.formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split('T')[0];
+//             }
+
+//             // Tách currentAddress thành các thành phần
+//             if (user.currentAddress) {
+//                 const [ward, district, province] = user.currentAddress.split(', ').reverse();
+//                 user.currentWard = ward || '';
+//                 user.currentDistrict = district || '';
+//                 user.currentProvince = province || '';
+//             } else {
+//                 user.currentWard = '';
+//                 user.currentDistrict = '';
+//                 user.currentProvince = '';
+//             }
+
+//             // Tách hometown thành các thành phần
+//             if (user.hometown) {
+//                 const [ward, district, province] = user.hometown.split(', ').reverse();
+//                 user.hometownWard = ward || '';
+//                 user.hometownDistrict = district || '';
+//                 user.hometownProvince = province || '';
+//             } else {
+//                 user.hometownWard = '';
+//                 user.hometownDistrict = '';
+//                 user.hometownProvince = '';
+//             }
+
+//             res.render('user/profiles/editprofile', {
+//                 layout: 'user/index',
+//                 title: 'Chỉnh sửa thông tin',
+//                 session: req.session,
+//                 user: user
+//             });
+//         })
+//         .catch(next);
+// }
+
+// // [PUT] /profile/:id/edit
+// updateInfo(req, res, next) {
+//     if (!req.session || !req.session.user) {
+//         return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
+//     }
+
+//     const { id } = req.params;
+//     let updatedUser; // Biến tạm để lưu user sau khi tìm thấy
+
+//     Users.findById(id)
+//         .then(user => {
+//             if (!user) {
+//                 return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
+//             }
+//             updatedUser = user; // Lưu tham chiếu đến user
+
+//             const {
+//                 dateOfBirth,
+//                 gender,
+//                 maritalStatus,
+//                 position,
+//                 employeeId,
+//                 nickname,
+//                 socialMedia,
+//                 currentProvince,
+//                 currentDistrict,
+//                 currentWard,
+//                 hometownProvince,
+//                 hometownDistrict,
+//                 hometownWard,
+//                 hobbies
+//             } = req.body;
+
+//             // Xử lý hobbies
+//             let hobbiesArray = [];
+//             if (Array.isArray(hobbies)) {
+//                 hobbiesArray = hobbies.map(h => h.trim()).filter(h => h);
+//             } else if (typeof hobbies === 'string' && hobbies.length > 0) {
+//                 hobbiesArray = hobbies.split(',').map(h => h.trim()).filter(h => h);
+//             }
+
+//             // Cập nhật các trường
+//             if (dateOfBirth) updatedUser.dateOfBirth = new Date(dateOfBirth);
+//             if (gender) updatedUser.gender = gender;
+//             if (maritalStatus) updatedUser.maritalStatus = maritalStatus;
+//             if (position) updatedUser.position = position;
+//             if (employeeId) updatedUser.employeeId = employeeId;
+//             if (nickname) updatedUser.nickname = nickname;
+//             if (hobbiesArray.length > 0) updatedUser.hobbies = hobbiesArray;
+
+//             // Xử lý địa chỉ
+//             const currentAddress = [currentWard, currentDistrict, currentProvince].filter(Boolean).join(', ');
+//             if (currentAddress) updatedUser.currentAddress = currentAddress;
+
+//             const hometown = [hometownWard, hometownDistrict, hometownProvince].filter(Boolean).join(', ');
+//             if (hometown) updatedUser.hometown = hometown;
+
+//             // Xử lý socialMedia
+//             const safeSocialMedia = socialMedia || {};
+//             updatedUser.socialMedia = {
+//                 facebook: safeSocialMedia.facebook || '',
+//                 linkedin: safeSocialMedia.linkedin || '',
+//                 instagram: safeSocialMedia.instagram || ''
+//             };
+
+//             return updatedUser.save();
+//         })
+//         .then(() => {
+//             // Cập nhật session với dữ liệu đã lưu
+//             req.session.user = {
+//                 ...req.session.user,
+//                 fullName: updatedUser.fullName,
+//                 email: updatedUser.email
+//             };
+//             res.redirect(`/profile/${id}/about?success=true`);
+//         })
+//         .catch(next);
+// }
+
+// [GET] /courses/:id/edit
+    edit(req, res, next) {
+        Users.findById(req.params.id)
+        .then(user => {
+            const userObj = mongooseToObject(user);
+            
+            if (Array.isArray(userObj.hobbies)) {
+                userObj.hobbies = userObj.hobbies.filter(h => h && h.trim() !== "");
             }
 
-            const { id } = req.params;
-            const user = await Users.findById(id).lean();
-            if (!user) {
-                req.session.destroy();
-                return res.redirect('/login?redirect=true');
+            // Nếu có ngày sinh thì format lại
+            if (userObj.dateOfBirth) {
+            const d = new Date(userObj.dateOfBirth);
+            // Format về yyyy-mm-dd
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, "0");
+            const dd = String(d.getDate()).padStart(2, "0");
+            userObj.formattedDateOfBirth = `${yyyy}-${mm}-${dd}`;
+            } else {
+            userObj.formattedDateOfBirth = "";
             }
 
-            if (user.dateOfBirth) {
-                // Định dạng dateOfBirth thành YYYY-MM-DD
-                user.formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split('T')[0];
-            }
-
-            res.render('user/profiles/editprofile', {
-                layout: 'user/index',
-                title: 'Chỉnh sửa thông tin',
-                session: req.session,
-                user: user
+            res.render("user/profiles/editprofile", {
+            layout: 'user/index',
+            title: 'Chỉnh sửa trang cá nhân',
+            user: userObj,
             });
-        } catch (err) {
-            console.error('Lỗi khi lấy trang chỉnh sửa thông tin:', err.message, err.stack);
-            res.status(500).render('user/login', {
-                layout: false,
-                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
-                loginData: {}
-            });
-        }
+        })
+        .catch(next);
     }
 
-    async updateInfo(req, res) {
-        try {
-            if (!req.session || !req.session.user) {
-                return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-            }
+    update(req, res, next){
+        const updateData = {
+            dateOfBirth: req.body.dateOfBirth || null,
+            gender: req.body.gender || "",
+            maritalStatus: req.body.maritalStatus || "",
+            position: req.body.position || "",
+            employeeId: req.body.employeeId || "",
+            nickname: req.body.nickname || "",
+            currentProvince: req.body.currentProvince || "",
+            hometownProvince: req.body.hometownProvince || "",
+            socialMedia: {
+                facebook: req.body["socialMedia.facebook"] || "",
+                instagram: req.body["socialMedia.instagram"] || "",
+                linkedin: req.body["socialMedia.linkedin"] || "",
+                twitter: req.body["socialMedia.twitter"] || "",
+            },
 
-            const { id } = req.params;
-            const user = await Users.findById(id);
-            if (!user) {
-                return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-            }
+            hobbies: Array.isArray(req.body.hobbies)
+            ? req.body.hobbies
+            : req.body.hobbies
+                ? [req.body.hobbies]
+                : [],
+        };
 
-            const {
-                dateOfBirth,
-                gender,
-                maritalStatus,
-                position,
-                employeeId,
-                currentAddress,
-                hometown,
-                nickname,
-                hobbies,
-                socialMedia
-            } = req.body;
+        console.log(">>> DATA UPDATE: ", updateData);
 
-            const hobbiesArray = hobbies ? hobbies.split(',').map(h => h.trim()) : [];
-
-            if (dateOfBirth) user.dateOfBirth = new Date(dateOfBirth);
-            if (gender) user.gender = gender;
-            if (maritalStatus) user.maritalStatus = maritalStatus;
-            if (position) user.position = position;
-            if (employeeId) user.employeeId = employeeId;
-            if (currentAddress) user.currentAddress = currentAddress;
-            if (hometown) user.hometown = hometown;
-            if (nickname) user.nickname = nickname;
-            if (hobbiesArray.length > 0) user.hobbies = hobbiesArray;
-
-            // Sửa lỗi socialMedia undefined
-            const safeSocialMedia = socialMedia || {};
-            user.socialMedia = {
-                facebook: safeSocialMedia.facebook || '',
-                linkedin: safeSocialMedia.linkedin || '',
-                instagram: safeSocialMedia.instagram || ''
-            };
-            await user.save();
-
-            return res.redirect(`/profile/${id}/about`);
-        } catch (err) {
-            console.error('Lỗi khi cập nhật thông tin:', err.message, err.stack);
-            res.status(500).json({ success: false, message: 'Có lỗi server.' });
-        }
+        Users.updateOne({ _id: req.params.id }, updateData)
+            .then(() => res.redirect(`/profile/${req.params.id}/about`))
+            .catch(next);
     }
 
     setting(req, res) {
