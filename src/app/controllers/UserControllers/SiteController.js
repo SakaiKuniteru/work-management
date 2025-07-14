@@ -1,32 +1,38 @@
 const Users = require('../../models/Users');
 const Tasks = require('../../models/Tasks');
 const Projects = require('../../models/Projects');
-// const { muntipleMongooseToObject } = require('../../../util/mongoose');
 const { mongooseToObject } = require('../../../util/mongoose')
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const multer = require('multer');
-const path = require('path');
-
-// Cấu hình multer để lưu file
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads/');
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage });
-
 class SiteUserController {
-    home(req, res) {
-        res.render('user/home', {
-            layout: 'user/index',
-            title: 'Trang chủ'
-        });
+    async home(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/home', {
+                layout: 'user/index',
+                title: 'Trang chủ',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
     login(req, res) {
@@ -38,10 +44,8 @@ class SiteUserController {
         });
     }
 
-    // Trong file SiteUserController.js
     async handleLogin(req, res) {
         try {
-            // Kiểm tra xem session có tồn tại không
             if (!req.session) {
                 console.error('Middleware session chưa được khởi tạo');
                 return res.status(500).render('user/login', {
@@ -54,7 +58,6 @@ class SiteUserController {
             const { loginId, password } = req.body;
             const errors = {};
 
-            // Kiểm tra dữ liệu đầu vào
             if (!loginId) {
                 errors.loginId = "Email hoặc số điện thoại không được để trống.";
             }
@@ -64,7 +67,6 @@ class SiteUserController {
             }
 
             if (Object.keys(errors).length > 0) {
-                // Lưu lỗi và dữ liệu vào session để hiển thị lại trên form
                 req.session.errors = errors;
                 req.session.loginData = { loginId };
                 return res.status(400).render('user/login', {
@@ -74,7 +76,6 @@ class SiteUserController {
                 });
             }
 
-            // Tìm người dùng theo email hoặc số điện thoại
             const user = await Users.findOne({
                 $or: [{ email: loginId }, { phoneNumber: loginId }]
             });
@@ -90,7 +91,6 @@ class SiteUserController {
                 });
             }
 
-            // Kiểm tra trạng thái xác thực
             if (!user.isVerified) {
                 errors.general = "Tài khoản chưa được xác thực. Vui lòng kiểm tra email để xác minh OTP.";
                 req.session.errors = errors;
@@ -102,7 +102,6 @@ class SiteUserController {
                 });
             }
 
-            // Kiểm tra mật khẩu
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 errors.general = "Mật khẩu không đúng.";
@@ -115,18 +114,15 @@ class SiteUserController {
                 });
             }
 
-            // Đăng nhập thành công, lưu thông tin người dùng vào session
             req.session.user = {
                 id: user._id,
                 email: user.email,
                 fullName: user.fullName
             };
 
-            // Xóa dữ liệu lỗi và dữ liệu form khỏi session
             req.session.errors = null;
             req.session.loginData = null;
 
-            // Chuyển hướng đến trang chính
             return res.redirect('/');
 
         } catch (err) {
@@ -189,16 +185,13 @@ class SiteUserController {
                 });
             }
 
-            // Kiểm tra email hoặc số điện thoại đã tồn tại
             const existingUser = await Users.findOne({
                 $or: [{ email }, { phoneNumber }]
             });
 
             if (existingUser) {
-                // Kiểm tra mật khẩu nếu tài khoản đã tồn tại
                 const isMatch = await bcrypt.compare(password, existingUser.password);
                 if (isMatch && existingUser.isVerified) {
-                    // Đăng nhập thành công, lưu session và chuyển hướng
                     if (req.session) {
                         req.session.user = {
                             id: existingUser._id,
@@ -210,7 +203,7 @@ class SiteUserController {
                     }
                     return res.status(200).json({
                         success: true,
-                        redirect: '/' // Chuyển ngay sang trang "/"
+                        redirect: '/' 
                     });
                 } else if (!isMatch) {
                     return res.status(400).json({
@@ -227,11 +220,10 @@ class SiteUserController {
                 }
             }
 
-            // Nếu không tồn tại, tiếp tục đăng ký mới
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
             const otp = crypto.randomInt(100000, 999999).toString();
-            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // Hiệu lực 10 phút
+            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); 
 
             const newUser = new Users({
                 fullName,
@@ -244,12 +236,10 @@ class SiteUserController {
             });
             await newUser.save();
 
-            // Thử gửi email, nhưng không ảnh hưởng đến logic chính
             try {
                 await this.sendOTPEmail(email, otp, fullName);
             } catch (emailErr) {
                 console.error("Failed to send OTP email:", emailErr.message, emailErr.stack);
-                // Không throw lỗi, tiếp tục trả về thành công
             }
 
             return res.status(200).json({
@@ -344,19 +334,16 @@ class SiteUserController {
                 });
             }
 
-            // Tạo mã OTP mới và vô hiệu hóa OTP cũ
             const newOtp = crypto.randomInt(100000, 999999).toString();
-            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // Hiệu lực 10 phút
+            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
             user.otp = newOtp;
             user.otpExpiry = otpExpiry;
             await user.save();
 
-            // Thử gửi email, nhưng không ảnh hưởng đến logic chính
             try {
                 await this.sendOTPEmail(email, newOtp, user.fullName);
             } catch (emailErr) {
                 console.error("Failed to resend OTP email:", emailErr.message, emailErr.stack);
-                // Không throw lỗi, tiếp tục trả về thành công
             }
 
             return res.json({
@@ -380,13 +367,11 @@ class SiteUserController {
 
     async logout(req, res) {
         try {
-            // Kiểm tra xem session có tồn tại không
             if (!req.session) {
                 console.error('Không có session để đăng xuất');
                 return res.redirect('/login');
             }
 
-            // Hủy session
             req.session.destroy((err) => {
                 if (err) {
                     console.error('Lỗi khi hủy session:', err.message, err.stack);
@@ -397,7 +382,6 @@ class SiteUserController {
                     });
                 }
 
-                // Chuyển hướng về trang đăng nhập
                 return res.redirect('/login');
             });
         } catch (err) {
@@ -410,15 +394,12 @@ class SiteUserController {
         }
     }
 
-    // Middleware chống cache
     noCache(req, res, next) {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
         next();
     }
-
-    // Middleware kiểm tra đăng nhập
     requireLogin(req, res, next) {
         if (!req.session || !req.session.user) {
             return res.redirect('/login');
@@ -426,53 +407,178 @@ class SiteUserController {
         next();
     }
 
-    tasks(req, res) {
-        res.render('user/tasks/index', {
-            layout: 'user/index',
-            title: 'Nhiệm vụ của tôi'
-        });
+    async tasks(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/tasks', {
+                layout: 'user/index',
+                title: 'Nhiệm vụ của tôi',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    tasksList(req, res) {
-        res.render('user/tasks/list', {
-            layout: 'user/index',
-            title: 'Nhiệm vụ mới'
-        });
+    async tasksList(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/tasks/list', {
+                layout: 'user/index',
+                title: 'Nhiệm vụ mới',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    taskDetail(req, res) {
-        res.render('user/tasks/detail', {
-            layout: 'user/index',
-            title: 'Thông tin nhiệm vụ'
-        });
+    async taskDetail(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/tasks/detail', {
+                layout: 'user/index',
+                title: 'Thông tin nhiệm vụ',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    projects(req, res) {
-        res.render('user/projects/index', {
-            layout: 'user/index',
-            title: 'Dự án của tôi'
-        });
+    async projects(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/projects/index', {
+                layout: 'user/index',
+                title: 'Dự án của tôi',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    projectsList(req, res) {
-        res.render('user/projects/list', {
-            layout: 'user/index',
-            title: 'Dự án mới'
-        });
+    async projectsList(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/projects/list', {
+                layout: 'user/index',
+                title: 'Dự án mới',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    projectDetail(req, res) {
-        res.render('user/projects/detail', {
-            layout: 'user/index',
-            title: 'Thông tin dự án'
-        });
-    }
+    async projectDetail(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
 
-    profile(req, res) {
-        res.render('user/profiles/profile', {
-            layout: 'user/index',
-            title: 'Trang cá nhân'
-        });
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/projects/detail', {
+                layout: 'user/index',
+                title: 'Thông tin dự án',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
     async posts(req, res) {
@@ -486,14 +592,6 @@ class SiteUserController {
             if (!user) {
                 req.session.destroy();
                 return res.redirect('/login?redirect=true');
-            }
-
-            if (user.dateOfBirth) {
-                user.formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString('vi-VN');
-            }
-
-            if (user.hobbies && Array.isArray(user.hobbies)) {
-                user.hobbiesString = user.hobbies.join(', ');
             }
 
             res.render('user/profiles/posts', {
@@ -533,7 +631,6 @@ class SiteUserController {
                 user.hobbiesString = user.hobbies.join(', ');
             }
 
-            // Kiểm tra thông báo thành công từ query parameter
             const success = req.query.success === 'true';
 
             res.render('user/profiles/about', {
@@ -541,7 +638,7 @@ class SiteUserController {
                 title: 'Giới thiệu',
                 session: req.session,
                 user: user,
-                success: success // Truyền biến success để hiển thị thông báo
+                success: success
             });
         } catch (err) {
             console.error('Lỗi khi lấy trang Giới thiệu:', err.message, err.stack);
@@ -564,14 +661,6 @@ class SiteUserController {
             if (!user) {
                 req.session.destroy();
                 return res.redirect('/login?redirect=true');
-            }
-
-            if (user.dateOfBirth) {
-                user.formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString('vi-VN');
-            }
-
-            if (user.hobbies && Array.isArray(user.hobbies)) {
-                user.hobbiesString = user.hobbies.join(', ');
             }
 
             res.render('user/profiles/dashboard', {
@@ -621,14 +710,6 @@ class SiteUserController {
                 return res.redirect('/login?redirect=true');
             }
 
-            if (user.dateOfBirth) {
-                user.formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString('vi-VN');
-            }
-
-            if (user.hobbies && Array.isArray(user.hobbies)) {
-                user.hobbiesString = user.hobbies.join(', ');
-            }
-
             res.render('user/profiles/photos', {
                 layout: 'user/index',
                 title: 'Ảnh',
@@ -645,323 +726,6 @@ class SiteUserController {
         }
     }
 
-    // Cập nhật ảnh đại diện
-    async updateAvatar(req, res) {
-        try {
-            if (!req.session || !req.session.user) {
-                return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-            }
-
-            const { id } = req.params;
-            const user = await Users.findById(id);
-            if (!user) {
-                return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-            }
-
-            user.avatar = `/uploads/${req.file.filename}`;
-            await user.save();
-
-            req.session.user.avatar = user.avatar;
-
-            res.json({ success: true, avatar: user.avatar });
-        } catch (err) {
-            console.error('Lỗi cập nhật ảnh đại diện:', err.message, err.stack);
-            res.status(500).json({ success: false, message: 'Có lỗi server.' });
-        }
-    }
-
-    // Cập nhật ảnh bìa
-    async updateCoverPhoto(req, res) {
-        try {
-            if (!req.session || !req.session.user) {
-                return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-            }
-
-            const { id } = req.params;
-            const user = await Users.findById(id);
-            if (!user) {
-                return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-            }
-
-            user.coverPhoto = `/uploads/${req.file.filename}`;
-            await user.save();
-
-            res.json({ success: true, coverPhoto: user.coverPhoto });
-        } catch (err) {
-            console.error('Lỗi cập nhật ảnh bìa:', err.message, err.stack);
-            res.status(500).json({ success: false, message: 'Có lỗi server.' });
-        }
-    }
-
-//     // async getEditInfo(req, res) {
-//     //     try {
-//     //         if (!req.session || !req.session.user) {
-//     //             return res.redirect('/login?redirect=true');
-//     //         }
-
-//     //         const { id } = req.params;
-//     //         const user = await Users.findById(id).lean();
-//     //         if (!user) {
-//     //             req.session.destroy();
-//     //             return res.redirect('/login?redirect=true');
-//     //         }
-
-//     //         if (user.dateOfBirth) {
-//     //             user.formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split('T')[0];
-//     //         }
-
-//     //         // Tách currentAddress thành các thành phần
-//     //         if (user.currentAddress) {
-//     //             const [ward, district, province] = user.currentAddress.split(', ').reverse();
-//     //             user.currentWard = ward || '';
-//     //             user.currentDistrict = district || '';
-//     //             user.currentProvince = province || '';
-//     //         } else {
-//     //             user.currentWard = '';
-//     //             user.currentDistrict = '';
-//     //             user.currentProvince = '';
-//     //         }
-
-//     //         // Tách hometown thành các thành phần
-//     //         if (user.hometown) {
-//     //             const [ward, district, province] = user.hometown.split(', ').reverse();
-//     //             user.hometownWard = ward || '';
-//     //             user.hometownDistrict = district || '';
-//     //             user.hometownProvince = province || '';
-//     //         } else {
-//     //             user.hometownWard = '';
-//     //             user.hometownDistrict = '';
-//     //             user.hometownProvince = '';
-//     //         }
-
-//     //         res.render('user/profiles/editprofile', {
-//     //             layout: 'user/index',
-//     //             title: 'Chỉnh sửa thông tin',
-//     //             session: req.session,
-//     //             user: user
-//     //         });
-//     //     } catch (err) {
-//     //         console.error('Lỗi khi lấy trang chỉnh sửa thông tin:', err.message, err.stack);
-//     //         res.status(500).render('user/login', {
-//     //             layout: false,
-//     //             errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
-//     //             loginData: {}
-//     //         });
-//     //     }
-//     // }
-
-//     // async updateInfo(req, res) {
-//     //     try {
-//     //         if (!req.session || !req.session.user) {
-//     //             return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-//     //         }
-
-//     //         const { id } = req.params;
-//     //         const user = await Users.findById(id);
-//     //         if (!user) {
-//     //             return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-//     //         }
-
-//     //         const {
-//     //             dateOfBirth,
-//     //             gender,
-//     //             maritalStatus,
-//     //             position,
-//     //             employeeId,
-//     //             nickname,
-//     //             socialMedia,
-//     //             currentProvince,
-//     //             currentDistrict,
-//     //             currentWard,
-//     //             hometownProvince,
-//     //             hometownDistrict,
-//     //             hometownWard,
-//     //             hobbies
-//     //         } = req.body;
-
-//     //         // Xử lý hobbies: có thể là mảng hoặc chuỗi từ checkbox
-//     //         let hobbiesArray = [];
-//     //         if (Array.isArray(hobbies)) {
-//     //             hobbiesArray = hobbies.map(h => h.trim()).filter(h => h); // Loại bỏ giá trị rỗng
-//     //         } else if (typeof hobbies === 'string' && hobbies.length > 0) {
-//     //             hobbiesArray = hobbies.split(',').map(h => h.trim()).filter(h => h);
-//     //         }
-
-//     //         // Cập nhật các trường chỉ khi có giá trị
-//     //         if (dateOfBirth) user.dateOfBirth = new Date(dateOfBirth);
-//     //         if (gender) user.gender = gender;
-//     //         if (maritalStatus) user.maritalStatus = maritalStatus;
-//     //         if (position) user.position = position;
-//     //         if (employeeId) user.employeeId = employeeId;
-//     //         if (nickname) user.nickname = nickname;
-//     //         if (hobbiesArray.length > 0) user.hobbies = hobbiesArray;
-
-//     //         // Xử lý địa chỉ hiện tại
-//     //         const currentAddress = [currentWard, currentDistrict, currentProvince].filter(Boolean).join(', ');
-//     //         if (currentAddress) user.currentAddress = currentAddress;
-
-//     //         // Xử lý quê quán
-//     //         const hometown = [hometownWard, hometownDistrict, hometownProvince].filter(Boolean).join(', ');
-//     //         if (hometown) user.hometown = hometown;
-
-//     //         // Xử lý socialMedia
-//     //         const safeSocialMedia = socialMedia || {};
-//     //         user.socialMedia = {
-//     //             facebook: safeSocialMedia.facebook || '',
-//     //             linkedin: safeSocialMedia.linkedin || '',
-//     //             instagram: safeSocialMedia.instagram || ''
-//     //         };
-
-//     //         await user.save();
-
-//     //         // Cập nhật session nếu cần
-//     //         req.session.user = {
-//     //             ...req.session.user,
-//     //             fullName: user.fullName,
-//     //             email: user.email
-//     //         };
-
-//     //         // Chuyển hướng về trang about với thông báo thành công
-//     //         res.redirect(`/profile/${id}/about?success=true`);
-//     //     } catch (err) {
-//     //         console.error('Lỗi khi cập nhật thông tin:', err.message, err.stack);
-//     //         res.status(500).json({ success: false, message: 'Có lỗi server.' });
-//     //     }
-//     // }
-
-// // [GET] /profile/:id/edit
-// getEditInfo(req, res, next) {
-//     if (!req.session || !req.session.user) {
-//         return res.redirect('/login?redirect=true');
-//     }
-
-//     const { id } = req.params;
-//     Users.findById(id)
-//         .lean()
-//         .then(user => {
-//             if (!user) {
-//                 req.session.destroy();
-//                 return res.redirect('/login?redirect=true');
-//             }
-
-//             if (user.dateOfBirth) {
-//                 user.formattedDateOfBirth = new Date(user.dateOfBirth).toISOString().split('T')[0];
-//             }
-
-//             // Tách currentAddress thành các thành phần
-//             if (user.currentAddress) {
-//                 const [ward, district, province] = user.currentAddress.split(', ').reverse();
-//                 user.currentWard = ward || '';
-//                 user.currentDistrict = district || '';
-//                 user.currentProvince = province || '';
-//             } else {
-//                 user.currentWard = '';
-//                 user.currentDistrict = '';
-//                 user.currentProvince = '';
-//             }
-
-//             // Tách hometown thành các thành phần
-//             if (user.hometown) {
-//                 const [ward, district, province] = user.hometown.split(', ').reverse();
-//                 user.hometownWard = ward || '';
-//                 user.hometownDistrict = district || '';
-//                 user.hometownProvince = province || '';
-//             } else {
-//                 user.hometownWard = '';
-//                 user.hometownDistrict = '';
-//                 user.hometownProvince = '';
-//             }
-
-//             res.render('user/profiles/editprofile', {
-//                 layout: 'user/index',
-//                 title: 'Chỉnh sửa thông tin',
-//                 session: req.session,
-//                 user: user
-//             });
-//         })
-//         .catch(next);
-// }
-
-// // [PUT] /profile/:id/edit
-// updateInfo(req, res, next) {
-//     if (!req.session || !req.session.user) {
-//         return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập.' });
-//     }
-
-//     const { id } = req.params;
-//     let updatedUser; // Biến tạm để lưu user sau khi tìm thấy
-
-//     Users.findById(id)
-//         .then(user => {
-//             if (!user) {
-//                 return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng.' });
-//             }
-//             updatedUser = user; // Lưu tham chiếu đến user
-
-//             const {
-//                 dateOfBirth,
-//                 gender,
-//                 maritalStatus,
-//                 position,
-//                 employeeId,
-//                 nickname,
-//                 socialMedia,
-//                 currentProvince,
-//                 currentDistrict,
-//                 currentWard,
-//                 hometownProvince,
-//                 hometownDistrict,
-//                 hometownWard,
-//                 hobbies
-//             } = req.body;
-
-//             // Xử lý hobbies
-//             let hobbiesArray = [];
-//             if (Array.isArray(hobbies)) {
-//                 hobbiesArray = hobbies.map(h => h.trim()).filter(h => h);
-//             } else if (typeof hobbies === 'string' && hobbies.length > 0) {
-//                 hobbiesArray = hobbies.split(',').map(h => h.trim()).filter(h => h);
-//             }
-
-//             // Cập nhật các trường
-//             if (dateOfBirth) updatedUser.dateOfBirth = new Date(dateOfBirth);
-//             if (gender) updatedUser.gender = gender;
-//             if (maritalStatus) updatedUser.maritalStatus = maritalStatus;
-//             if (position) updatedUser.position = position;
-//             if (employeeId) updatedUser.employeeId = employeeId;
-//             if (nickname) updatedUser.nickname = nickname;
-//             if (hobbiesArray.length > 0) updatedUser.hobbies = hobbiesArray;
-
-//             // Xử lý địa chỉ
-//             const currentAddress = [currentWard, currentDistrict, currentProvince].filter(Boolean).join(', ');
-//             if (currentAddress) updatedUser.currentAddress = currentAddress;
-
-//             const hometown = [hometownWard, hometownDistrict, hometownProvince].filter(Boolean).join(', ');
-//             if (hometown) updatedUser.hometown = hometown;
-
-//             // Xử lý socialMedia
-//             const safeSocialMedia = socialMedia || {};
-//             updatedUser.socialMedia = {
-//                 facebook: safeSocialMedia.facebook || '',
-//                 linkedin: safeSocialMedia.linkedin || '',
-//                 instagram: safeSocialMedia.instagram || ''
-//             };
-
-//             return updatedUser.save();
-//         })
-//         .then(() => {
-//             // Cập nhật session với dữ liệu đã lưu
-//             req.session.user = {
-//                 ...req.session.user,
-//                 fullName: updatedUser.fullName,
-//                 email: updatedUser.email
-//             };
-//             res.redirect(`/profile/${id}/about?success=true`);
-//         })
-//         .catch(next);
-// }
-
-// [GET] /courses/:id/edit
     edit(req, res, next) {
         Users.findById(req.params.id)
         .then(user => {
@@ -971,10 +735,8 @@ class SiteUserController {
                 userObj.hobbies = userObj.hobbies.filter(h => h && h.trim() !== "");
             }
 
-            // Nếu có ngày sinh thì format lại
             if (userObj.dateOfBirth) {
             const d = new Date(userObj.dateOfBirth);
-            // Format về yyyy-mm-dd
             const yyyy = d.getFullYear();
             const mm = String(d.getMonth() + 1).padStart(2, "0");
             const dd = String(d.getDate()).padStart(2, "0");
@@ -992,7 +754,7 @@ class SiteUserController {
         .catch(next);
     }
 
-    update(req, res, next){
+    update(req, res, next) {
         const updateData = {
             dateOfBirth: req.body.dateOfBirth || null,
             gender: req.body.gender || "",
@@ -1008,44 +770,124 @@ class SiteUserController {
                 linkedin: req.body["socialMedia.linkedin"] || "",
                 twitter: req.body["socialMedia.twitter"] || "",
             },
-
             hobbies: Array.isArray(req.body.hobbies)
-            ? req.body.hobbies
-            : req.body.hobbies
-                ? [req.body.hobbies]
-                : [],
+                ? req.body.hobbies
+                : req.body.hobbies
+                    ? [req.body.hobbies]
+                    : [],
         };
 
-        console.log(">>> DATA UPDATE: ", updateData);
+        let avatarPath = null;
 
-        Users.updateOne({ _id: req.params.id }, updateData)
-            .then(() => res.redirect(`/profile/${req.params.id}/about`))
+        if (req.file) {
+            avatarPath = "/uploads/" + req.file.filename;
+            updateData.avatar = avatarPath;
+        }
+
+        Users.findById(req.params.id)
+            .then(user => {
+                if (!user) throw new Error("User not found");
+
+                if (avatarPath) {
+                    user.photos = user.photos || [];
+                    user.photos.push(avatarPath);
+                    updateData.photos = user.photos;
+                }
+
+                return Users.updateOne({ _id: req.params.id }, updateData);
+            })
+            .then(() => {
+                res.redirect(`/profile/${req.params.id}/about`);
+            })
             .catch(next);
     }
 
-    setting(req, res) {
-        res.render('user/profiles/setting/setting', {
-            layout: 'user/index',
-            title: 'Trang cá nhân'
-        });
+    async setting(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/profiles/setting/setting', {
+                layout: 'user/index',
+                title: 'Trang cá nhân',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    information(req, res) {
-        res.render('user/profiles/setting/information', {
-            layout: 'user/index',
-            title: 'Trang cá nhân'
-        });
+    async information(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/profiles/setting/information', {
+                layout: 'user/index',
+                title: 'Trang cá nhân',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 
-    password_security(req, res) {
-        res.render('user/profiles/setting/password_security', {
-            layout: 'user/index',
-            title: 'Trang cá nhân'
-        });
+    async password_security(req, res) {
+        try {
+            if (!req.session || !req.session.user) {
+                return res.redirect('/login?redirect=true');
+            }
+
+            const id = req.session.user.id;
+            const user = await Users.findById(id).lean();
+            if (!user) {
+                req.session.destroy();
+                return res.redirect('/login?redirect=true');
+            }
+
+            res.render('user/profiles/setting/password_security', {
+                layout: 'user/index',
+                title: 'Trang cá nhân',
+                session: req.session,
+                user: user
+            });
+        } catch (err) {
+            console.error('Lỗi khi lấy trang Bài viết:', err.message, err.stack);
+            res.status(500).render('user/login', {
+                layout: false,
+                errors: { general: 'Có lỗi server. Vui lòng thử lại.' },
+                loginData: {}
+            });
+        }
     }
 }
-
-SiteUserController.prototype.uploadAvatar = upload.single('avatar');
-SiteUserController.prototype.uploadCover = upload.single('cover');
 
 module.exports = new SiteUserController();

@@ -5,15 +5,13 @@
                 <img 
                     src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"                    id="avatarPhoto"
                     class="avatar-img-profile"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
                     alt="Avatar"
                     style="cursor: pointer;"
                 >
             </div>
             
             <div>
-                <h2 class="profile-name mb-0">PhẠm QuỐc HuY</h2>
+                <h2 class="profile-name mb-0">{{user.fullName}}</h2>
                 <small class="text-muted">100 Đồng nghiệp</small>
             </div>
         </div>
@@ -38,25 +36,40 @@
             <div class="tab-content p-3 bg-white border border-top-0 rounded-bottom mb-5" id="profileTabsContent">
                 <div class="tab-pane fade show active" id="photos" role="tabpanel" aria-labelledby="photos-tab">
                     <h5>Ảnh</h5>
-                    <div class="row g-3">
-                        <div class="col-6 col-md-3">
-                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 1">
-                        </div>
-
-                        <div class="col-6 col-md-3">
-                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 2">
-                        </div>
-
-                        <div class="col-6 col-md-3">
-                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 3">
-                        </div>
-
-                        <div class="col-6 col-md-3">
-                            <img src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-6/482327573_681928960841027_3576385229933483554_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHqBeFyNfYpHdB1aV4odQRd9ptyMzRlxBT2m3IzNGXEFCPvZJTBeM_BZ1TewZq83R2fDfAGF64cVmvZmB-IKbyZ&_nc_ohc=qsH_ahJDp4AQ7kNvwEjiwzp&_nc_oc=AdlbJIWF8h4f_XCK1JJNI-ItzxVAdViYhWhKs5erpi632oaKosuqQ2FgFBgK-OQEHFk&_nc_zt=23&_nc_ht=scontent.fhan4-4.fna&_nc_gid=y9pVrGhboTk0e4eFbdg53w&oh=00_AfMeyDsep6KU_mWThJqvthqPBMnwHV8vJy-Zbz9mwhv_-Q&oe=68672B82" class="img-fluid rounded" alt="Ảnh 4">
-                        </div>
+                    <div class="row g-3 mt-3">
+                        {{#each user.photos}}
+                            <div class="col-md-4">
+                                <img 
+                                    src="{{this}}" 
+                                    class="img-thumbnail" 
+                                    style="width: 100%; height: 100%;"
+                                    onclick="openPhotoModal('{{this}}')"
+                                >
+                            </div>
+                        {{/each}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal xem ảnh -->
+<div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <img src="" id="modalPhoto" class="img-fluid" alt="Ảnh xem lớn">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openPhotoModal(src) {
+    const modalImg = document.getElementById('modalPhoto');
+    modalImg.src = src;
+    const modal = new bootstrap.Modal(document.getElementById('photoModal'));
+    modal.show();
+  }
+</script>

@@ -7,7 +7,6 @@ const Users = new Schema({
     password: { type: String, required: true },
     phoneNumber: { type: String },
     avatar: { type: String },
-    coverPhoto: { type: String },
     dateOfBirth: { type: Date },
     gender: { type: String }, 
     maritalStatus: { type: String }, 
@@ -24,7 +23,7 @@ const Users = new Schema({
         linkedin: { type: String },
         others: [{ name: String, link: String }]
     },
-    slug: { type: String, unique: true },
+    // slug: { type: String, unique: true },
     photos: [{ type: String }],
     otp: { type: String },
     isVerified: { type: Boolean, default: false },

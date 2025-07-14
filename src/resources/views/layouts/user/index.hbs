@@ -163,16 +163,24 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link p-0 d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                     <div class="position-relative d-inline-block">
-                                        <img class="user-avatar" src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7" alt="">
+                                        <img 
+                                        class="user-avatar" 
+                                        src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"
+                                        alt="Avatar"
+                                        >
                                         <i class="fa fa-chevron-down dropdown-caret-icon position-absolute"></i>
                                     </div>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="/profiles/{{user._id}}">
-                                            <img class="user-avatar" src="https://scontent.fhan4-4.fna.fbcdn.net/v/t39.30808-1/484895554_685047493862507_8119295966222777149_n.jpg?stp=dst-jpg_s480x480_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_ohc=caectHl2dC0Q7kNvwFZpmTp&_nc_oc=AdlzuM-4EqEXpj0a8NXp2aWixsOMa7ZpPS2qwivLi7ymF5mUyALOjAifZ68WPVmObys&_nc_zt=24&_nc_ht=scontent.fhan4-4.fna&_nc_gid=M__aZzDE70gPFwVMlRlKMA&oh=00_AfM9gSvmddWNMOSpz9yshrMxON82RP6HQ6B8mB8Ec-M2fg&oe=6865EDD7" alt="">
-                                            Phạm Quốc Huy
+                                        <a class="dropdown-item" href="/profile/{{user._id}}">
+                                            <img 
+                                                class="user-avatar" 
+                                                src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"
+                                                alt="Avatar"
+                                            >
+                                            {{user.fullName}}
                                         </a>
                                     </li>
 

@@ -5,15 +5,13 @@
                 <img 
                     src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"                    id="avatarPhoto"
                     class="avatar-img-profile"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
                     alt="Avatar"
                     style="cursor: pointer;"
                 >
             </div>
 
             <div>
-                <h2 class="profile-name mb-0">PhẠm QuỐc HuY</h2>
+                <h2 class="profile-name mb-0">{{user.fullName}}</h2>
                 <small class="text-muted">100 Đồng nghiệp</small>
             </div>
         </div>

@@ -204,7 +204,6 @@
         if (editModal) editModal.hide();
     }
 
-    // Dọn backdrop tránh treo màn đen
     document.querySelectorAll('.modal').forEach(modal => {
         modal.addEventListener('hidden.bs.modal', () => {
             document.body.classList.remove('modal-open');
@@ -216,7 +215,6 @@
         var modal = new bootstrap.Modal(document.getElementById('birthdayModal'));
         modal.show();
 
-        // Khởi tạo datepicker nếu chưa có
         $('#birthdayInput').datepicker({
             format: 'dd/mm/yyyy',
             autoclose: true,
