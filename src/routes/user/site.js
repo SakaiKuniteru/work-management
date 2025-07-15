@@ -5,9 +5,10 @@ const upload = require('../../app/middlewares/upload');
 
 routerUser.get('/information', siteUserController.noCache, siteUserController.requireLogin, siteUserController.information);
 routerUser.get('/password-security', siteUserController.noCache, siteUserController.requireLogin, siteUserController.password_security);
-routerUser.get('/setting/', siteUserController.noCache, siteUserController.requireLogin, siteUserController.setting);
+routerUser.put('/setting/:id', siteUserController.noCache, siteUserController.requireLogin, upload.single('avatar'), siteUserController.updateSetting);
+routerUser.get('/setting', siteUserController.noCache, siteUserController.requireLogin, siteUserController.setting);
 routerUser.get('/profile/:id/edit', siteUserController.noCache, siteUserController.requireLogin, siteUserController.edit);
-routerUser.put('/profile/:id', siteUserController.noCache, siteUserController.requireLogin, upload.single('avatar'), siteUserController.update);
+routerUser.put('/profile/:id', siteUserController.noCache, siteUserController.requireLogin, upload.single('avatar'), siteUserController.updateProfile);
 routerUser.get('/profile/:id/photos', siteUserController.noCache, siteUserController.requireLogin, siteUserController.photos);
 routerUser.get('/profile/:id/dashboard', siteUserController.noCache, siteUserController.requireLogin, siteUserController.dashboard);
 routerUser.get('/profile/:id/about', siteUserController.noCache, siteUserController.requireLogin, siteUserController.about);

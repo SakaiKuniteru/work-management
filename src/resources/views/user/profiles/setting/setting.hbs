@@ -26,7 +26,7 @@
                     Thông tin cá nhân
                 </a>
 
-                <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <a href="/logout" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom">
                     <i class="fa fa-sign-out-alt"></i> 
                     Đăng xuất
                 </a>
@@ -93,75 +93,91 @@
             </div>
         </div>
 
-        <!-- Edit Name Modal -->
-        <div class="modal fade" id="editNameModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
-                <div class="modal-content">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="openProfileModalFromChild()">
-                            <i class="fa fa-arrow-left fa-lg"></i>
-                        </button>
-                        
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <h5 class="modal-title fw-bold text-center mb-4">Chỉnh sửa Họ và Tên</h5>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="fullNameInput" class="form-label">Họ và tên</label>
-                            <input type="text" class="form-control mb-3" placeholder="Phạm Văn A">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="fullNameInput" class="form-label">Bí Danh</label>
-                            <input type="text" class="form-control mb-3" placeholder="A Hay Hóng">
-                        </div>
-
-                        <div class="text-center">
-                            <button class="btn btn-primary w-25">
-                                Lưu thay đổi
+        <form method="POST" action="/setting/{{user._id}}?_method=PUT" enctype="multipart/form-data">
+            <!-- Edit Name Modal -->
+            <div class="modal fade" id="editNameModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="openProfileModalFromChild()">
+                                <i class="fa fa-arrow-left fa-lg"></i>
                             </button>
+                            
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <h5 class="modal-title fw-bold text-center mb-4">Chỉnh sửa Họ và Tên</h5>
+
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Họ và tên</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control mb-3" 
+                                    name="fullName"
+                                    value="{{user.fullName}}"
+                                >
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Bí Danh</label>
+                                <input 
+                                    type="text"
+                                    class="form-control mb-3"
+                                    name="nickname"
+                                    value="{{user.nickname}}"
+                                >
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn btn-primary w-25">
+                                    Lưu thay đổi
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Edit Avatar Modal -->
-        <div class="modal fade" id="editAvatarModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
-                <div class="modal-content">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="openProfileModalFromChild()">
-                            <i class="fa fa-arrow-left fa-lg"></i>
-                        </button>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <h5 class="modal-title fw-bold mb-2 text-center">Chỉnh sửa ảnh đại diện</h5>
-
-                    <div class="modal-body text-center">
-                        <img 
-                            src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"
-                            alt="Avatar"
-                            class="rounded-circle mb-5" 
-                            style="width: 120px; height: 120px;"
-                        >
-
-                        <div class="mb-3 text-start">
-                            <input type="file" id="avatarFileInput" class="form-control d-none">
-                            <button type="button" class="edit-avatar-btn" onclick="document.getElementById('avatarFileInput').click();">
-                                Chỉnh sửa ảnh đại diện
+            <!-- Edit Avatar Modal -->
+            <div class="modal fade" id="editAvatarModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="btn btn-link text-dark p-0 me-2" onclick="openProfileModalFromChild()">
+                                <i class="fa fa-arrow-left fa-lg"></i>
                             </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
-                        <div class="text-center">
-                            <button class="btn btn-primary w-25">Lưu thay đổi</button>
+                        <h5 class="modal-title fw-bold mb-2 text-center">Chỉnh sửa ảnh đại diện</h5>
+
+                        <div class="modal-body text-center">
+                            <img 
+                                src="{{#if user.avatar}}{{user.avatar}}{{else}}/img/avatar.jpg{{/if}}"
+                                id="avatarPhoto"
+                                alt="Avatar"
+                                class="rounded-circle mb-5" 
+                                style="width: 120px; height: 120px;"
+                            >
+
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary me-3" onclick="document.getElementById('avatarFileInput').click();">
+                                    Chỉnh ảnh
+                                </button>
+                                <input 
+                                    type="file" 
+                                    id="avatarFileInput" 
+                                    class="form-control d-none"
+                                    name="avatar"
+                                    accept="image/*"
+                                >
+                                <button class="btn btn-primary">Lưu</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -206,4 +222,11 @@
         });
     });
 
+    document.getElementById("avatarFileInput").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const preview = document.getElementById("avatarPhoto");
+            preview.src = URL.createObjectURL(file);
+        }
+    });
 </script>

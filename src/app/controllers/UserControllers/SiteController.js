@@ -21,7 +21,6 @@ class SiteUserController {
 
             res.render('user/home', {
                 layout: 'user/index',
-                title: 'Trang chủ',
                 session: req.session,
                 user: user
             });
@@ -422,7 +421,6 @@ class SiteUserController {
 
             res.render('user/tasks', {
                 layout: 'user/index',
-                title: 'Nhiệm vụ của tôi',
                 session: req.session,
                 user: user
             });
@@ -451,7 +449,6 @@ class SiteUserController {
 
             res.render('user/tasks/list', {
                 layout: 'user/index',
-                title: 'Nhiệm vụ mới',
                 session: req.session,
                 user: user
             });
@@ -480,7 +477,6 @@ class SiteUserController {
 
             res.render('user/tasks/detail', {
                 layout: 'user/index',
-                title: 'Thông tin nhiệm vụ',
                 session: req.session,
                 user: user
             });
@@ -509,7 +505,6 @@ class SiteUserController {
 
             res.render('user/projects/index', {
                 layout: 'user/index',
-                title: 'Dự án của tôi',
                 session: req.session,
                 user: user
             });
@@ -538,7 +533,6 @@ class SiteUserController {
 
             res.render('user/projects/list', {
                 layout: 'user/index',
-                title: 'Dự án mới',
                 session: req.session,
                 user: user
             });
@@ -567,7 +561,6 @@ class SiteUserController {
 
             res.render('user/projects/detail', {
                 layout: 'user/index',
-                title: 'Thông tin dự án',
                 session: req.session,
                 user: user
             });
@@ -596,7 +589,6 @@ class SiteUserController {
 
             res.render('user/profiles/posts', {
                 layout: 'user/index',
-                title: 'Bài viết',
                 session: req.session,
                 user: user
             });
@@ -635,7 +627,6 @@ class SiteUserController {
 
             res.render('user/profiles/about', {
                 layout: 'user/index',
-                title: 'Giới thiệu',
                 session: req.session,
                 user: user,
                 success: success
@@ -665,7 +656,6 @@ class SiteUserController {
 
             res.render('user/profiles/dashboard', {
                 layout: 'user/index',
-                title: 'Bảng điều khiển',
                 session: req.session,
                 user: user,
                 chartData: {
@@ -712,7 +702,6 @@ class SiteUserController {
 
             res.render('user/profiles/photos', {
                 layout: 'user/index',
-                title: 'Ảnh',
                 session: req.session,
                 user: user
             });
@@ -736,25 +725,24 @@ class SiteUserController {
             }
 
             if (userObj.dateOfBirth) {
-            const d = new Date(userObj.dateOfBirth);
-            const yyyy = d.getFullYear();
-            const mm = String(d.getMonth() + 1).padStart(2, "0");
-            const dd = String(d.getDate()).padStart(2, "0");
-            userObj.formattedDateOfBirth = `${yyyy}-${mm}-${dd}`;
+                const d = new Date(userObj.dateOfBirth);
+                const yyyy = d.getFullYear();
+                const mm = String(d.getMonth() + 1).padStart(2, "0");
+                const dd = String(d.getDate()).padStart(2, "0");
+                userObj.formattedDateOfBirth = `${yyyy}-${mm}-${dd}`;
             } else {
-            userObj.formattedDateOfBirth = "";
+                userObj.formattedDateOfBirth = "";
             }
 
             res.render("user/profiles/editprofile", {
             layout: 'user/index',
-            title: 'Chỉnh sửa trang cá nhân',
             user: userObj,
             });
         })
         .catch(next);
     }
 
-    update(req, res, next) {
+    updateProfile(req, res, next) {
         const updateData = {
             dateOfBirth: req.body.dateOfBirth || null,
             gender: req.body.gender || "",
@@ -817,7 +805,6 @@ class SiteUserController {
 
             res.render('user/profiles/setting/setting', {
                 layout: 'user/index',
-                title: 'Trang cá nhân',
                 session: req.session,
                 user: user
             });
@@ -829,6 +816,35 @@ class SiteUserController {
                 loginData: {}
             });
         }
+    }
+
+    updateSetting(req, res, next) {
+        const updateData = {
+            fullName: req.body.fullName || "",
+            nickname: req.body.nickname || "",
+        };
+
+        let avatarPath = null;
+
+        if (req.file) {
+            avatarPath = "/uploads/" + req.file.filename;
+            updateData.avatar = avatarPath;
+        }
+
+        Users.findById(req.params.id)
+            .then(user => {
+                    if (!user) throw new Error("User not found");
+
+                    if (avatarPath) {
+                        user.photos = user.photos || [];
+                        user.photos.push(avatarPath);
+                        updateData.photos = user.photos;
+                    }
+
+                    return Users.updateOne({ _id: req.params.id }, updateData);
+                })
+                .then(() => res.redirect('/setting'))
+                .catch(next);
     }
 
     async information(req, res) {
@@ -844,9 +860,12 @@ class SiteUserController {
                 return res.redirect('/login?redirect=true');
             }
 
+            if (user.dateOfBirth) {
+                user.formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString('vi-VN');
+            }
+
             res.render('user/profiles/setting/information', {
                 layout: 'user/index',
-                title: 'Trang cá nhân',
                 session: req.session,
                 user: user
             });
@@ -875,7 +894,6 @@ class SiteUserController {
 
             res.render('user/profiles/setting/password_security', {
                 layout: 'user/index',
-                title: 'Trang cá nhân',
                 session: req.session,
                 user: user
             });
