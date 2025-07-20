@@ -1,7 +1,10 @@
 const express = require('express');
-const routerAdmnin = express.Router();
+const routerAdmin = express.Router();
 const siteAdminController = require('../../app/controllers/AdminControllers/SiteController');
 
-routerAdmnin.get('/', siteAdminController.home);
+routerAdmin.get('/customers/create', siteAdminController.createCustomer);
+routerAdmin.get('/customers/edit', siteAdminController.editCustomer);
+routerAdmin.get('/customers', siteAdminController.customer);
+routerAdmin.get('/', siteAdminController.home);
 
-module.exports = routerAdmnin;
+module.exports = routerAdmin;

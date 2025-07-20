@@ -21,7 +21,6 @@
     transform: rotate(180deg);
 }
 
-/* Wrapper bo tròn */
 .search-box .search-input {
     border-radius: 50px;
     height: 34px;
@@ -42,20 +41,17 @@
     font-size: 14px;
 }
 
-/* Khi focus: ẩn icon */
 .search-box .search-input:focus + .search-icon,
 .search-box .search-input:not(:placeholder-shown) + .search-icon {
     opacity: 0;
     visibility: hidden;
 }
 
-/* Bo viền xanh khi focus */
 .search-box .search-input:focus {
     box-shadow: none;
     border-color: #198754;
 }
 
-/* Placeholder styling */
 .search-box .search-input::placeholder {
     color: #999;
     font-weight: 400;
@@ -67,23 +63,6 @@
     object-fit: cover;
     border-radius: 0.5rem;
 }
-
-// .avatar-container {
-//     position: absolute;
-//     bottom: -60px;
-//     left: 30px;
-//     border: 4px solid #fff;
-//     border-radius: 50%;
-//     overflow: hidden;
-//     width: 120px;
-//     height: 120px;
-// }
-
-// .avatar-container img {
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-// }
 
 .profile-name {
     margin-top: 70px;
